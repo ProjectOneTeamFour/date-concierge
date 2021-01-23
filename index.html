@@ -19,18 +19,17 @@
     <main>
         <img src="assets/images/logo - stacked.png" alt="date concierge logo">
         <p>Dating sucks. Especially right now. Let us take the planning off of your hands.</p>
-        <form>
-            <input type="text" name="user-name" class="" placeholder="Your name" />
-            <input type="text" class="date-day" placeholder="When's the big day" id="" autocomplete="off">
-            <select name="date-mood" class="select-dropdown">
-                <option value="" disabled selection>What mood are you trying to set?</option>
+        <form id="submit-form">
+            <input type="text" id="user-name" name="user-name" class="" placeholder="Your name" />
+            <input type="date" id="date" name="date" class="date-day" placeholder="When's the big day" id="" autocomplete="off">
+            <select id="date-mood" name="date-mood" class="select-dropdown">
+                <option value="" disabled selected>What mood are you trying to set?</option>
                 <option value="spontaneous">Spontaneous</option>
                 <option value="romantic">Romantic</option>
                 <option value="adventurous">Adventurous</option>
                 <option value="relaxed">Relaxed</option>
             </select>
             <button class="btn" id="generate-date" type="submit">Get Date Ideas</button>
-
         </form>
     </main>
 
@@ -40,6 +39,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <!-- custom scripts -->
-    <script src="./assets/js/scripts.js"></script>
+    <script src="./assets/js/homepage.js"></script>
 </body>
 </html>

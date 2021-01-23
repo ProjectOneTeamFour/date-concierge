@@ -4,3 +4,19 @@
     --grey: #302d2e;
     --white: #ffffff;
 }
+
+.main-background {
+    background-color: var(--pink);
+}
+
+.section-background {
+    background-color: var(--white);
+}
+
+.nav-button-background {
+    background-color: var(--grey);
+}
+
+.footer-links:hover {
+    color: var(--grey);
+}

@@ -5,6 +5,7 @@
     --white: #ffffff;
 }
 
+/*Background Options */
 .main-background {
     background-color: var(--pink);
 }
@@ -13,6 +14,15 @@
     background-color: var(--white);
 }
 
+.grey-background {
+    background-color: var(--grey);
+}
+
+/*Font color options */
+.pink-font {
+    color: var(--pink)
+}
+/*Button Options */
 .nav-button-background {
     background-color: var(--grey);
 }

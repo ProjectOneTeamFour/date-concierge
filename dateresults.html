@@ -24,7 +24,7 @@
                 <img class="brand-logo" src="assets/images/logo-horizontal.png" alt="date concierge logo">
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li class="waves-effect waves-light btn-large nav-button-background">Change the Mood</li>
-                    <li class="waves-effect waves-light btn-large nav-button-background">My ♥ List</li>
+                    <li class="waves-effect waves-light btn-large nav-button-background" href="#lovelistmodal">My ♥ List</li>
                 </ul>
             </div>
         </nav>
@@ -65,6 +65,18 @@
             <div class="col s6">
                 <button type="submit" class="waves-effect waves-light btn-large nav-button-background">Nah, next please!</button>
             </div>
+              <!-- Love List Modal -->
+        <div id="lovelistmodal" class="modal">
+            <div class="modal-content">
+                <h4>My ♥ list</h4>
+                <p>Here's your list of winning date ideas.</p>
+                <div class="love-list-info"></div>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Back to results</a>
+            </div>
+        </div>
+        <!--End of modal-->
     </main>
     <footer class="page-footer main-background">
         <div class="container">
@@ -93,6 +105,7 @@
           </div>
         </div>
       </footer>
+          
 
     <!-- sources for jquery, jqueryui, touch punch and momentjs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -103,5 +116,7 @@
     <script type="text/javascript" src="assets/js/materialize.js"></script>
     <!-- custom scripts -->
     <script src="./assets/js/dateresults.js"></script>
+    <!-- custom scripts from hayley -->
+    <script src="assets/js/dateresults-hayleyjs.js"></script>
 </body>
 </html>

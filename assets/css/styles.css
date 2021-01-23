@@ -4,3 +4,11 @@
     --grey: #302d2e;
     --white: #ffffff;
 }
+
+main#landing-page {
+    min-height: 100vh;
+}
+
+.card {
+    width: 400px;
+}

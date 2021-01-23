@@ -10,9 +10,29 @@
         integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="./assets/css/styles.css" />
-    <title>Date-Concierge</title>
+    <title>Date Concierge</title>
 </head>
 <body>
+    <header>
+
+    </header>
+    <main>
+        <img src="assets/images/logo - stacked.png" alt="date concierge logo">
+        <p>Dating sucks. Especially right now. Let us take the planning off of your hands.</p>
+        <form>
+            <input type="text" name="user-name" class="" placeholder="Your name" />
+            <input type="text" class="date-day" placeholder="When's the big day" id="" autocomplete="off">
+            <select name="date-mood" class="select-dropdown">
+                <option value="" disabled selection>What mood are you trying to set?</option>
+                <option value="spontaneous">Spontaneous</option>
+                <option value="romantic">Romantic</option>
+                <option value="adventurous">Adventurous</option>
+                <option value="relaxed">Relaxed</option>
+            </select>
+            <button class="btn" id="generate-date" type="submit">Get Date Ideas</button>
+
+        </form>
+    </main>
 
     <!-- sources for jquery, jqueryui, touch punch and momentjs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

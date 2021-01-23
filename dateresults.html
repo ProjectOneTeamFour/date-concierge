@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+    <title>Date Concierge</title>
+</head>
+<body>
+    <header>
+        <img src="assets/images/logo-horizontal.png" alt="date concierge logo">
+        <nav>
+            <ul>
+                <li>Change the mood</li>
+                <li>My ♥ list</li>
+            </ul>
+        </nav>
+
+    </header>
+    <main>
+        <h1>Get ready. Get dressed. Here's what we've got lined up for you, <span id="user-name"></span></h1>
+        <p>Based on the weather in <span id="city"></span>, we think you should <span id="in-or-out"></span>.</p>
+        <div id="weather-container">
+            <h3>Tonight's forecast</h3>
+            <p><span id="weather-description"></span> with a chance of love ♥.</p>
+            <div id="current-weather"></div>
+        </div>
+        <div id="restaurant-container">
+            <h3>On the menu</h3>
+            <p>Let's <span id="takeout-dineout"></span>. Check out this great restaurant</p>
+            <br>
+            <div id="restaurant-info"></div>
+        </div>
+        <div id="movie-or-map-container">
+            <div class="secondary-activity-info"></div>
+        </div>
+        <button type="submit">Add this to my ♥ list</button>
+        <button type="submit">Nah, next please!</button>
+    </main>
+    <footer>
+        <h4>Please date responsibly.</h4>
+    </footer>
+
+    <!-- sources for jquery, jqueryui, touch punch and momentjs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <!-- custom scripts -->
+    <script src="./assets/js/scripts.js"></script>
+</body>
+</html>

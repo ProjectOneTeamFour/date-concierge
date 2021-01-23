@@ -4,3 +4,31 @@
     --grey: #302d2e;
     --white: #ffffff;
 }
+
+main#landing-page {
+    min-height: 100vh;
+}
+
+input#user-name, input#date {
+    background-color: var(--white);
+    padding: 0px 5px;
+}
+
+.card {
+    width: 400px;
+}
+
+.datepicker-date-display {
+    background-color: var(--pink);
+}
+
+.datepicker-day-button {
+    color: var(--grey);
+}
+
+.datepicker-cancel, 
+.datepicker-clear, 
+.datepicker-today, 
+.datepicker-done {
+    color: var(--pink);
+}

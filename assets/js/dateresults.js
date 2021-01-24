@@ -272,7 +272,7 @@ var nextBtnHandler = function()
 {
     counter++;
     movieMapContainerEl.innerHTML ="";
-    getMovieData();
+    // getMovieData();
 }
 
 //save list
@@ -302,7 +302,7 @@ var loadList = function()
 //     // instance.open();
 // }); 
 
-getMovieData();
+// getMovieData();
 nextBtnEl.addEventListener("click", nextBtnHandler);
 saveBtnEl.addEventListener("click", addToList);
 

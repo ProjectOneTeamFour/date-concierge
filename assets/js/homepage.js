@@ -28,11 +28,20 @@ var changePage = function(event)
     }
 };
 
+var today = new Date();
+var nextWeek = new Date(today);
+nextWeek.setDate(nextWeek.getDate() + 7);
 // Initialize datepicker
 $("#date").datepicker(
 {
     format: "dd-mm-yyyy",
-    minDate : new Date(),
+    minDate : today,
+    maxDate : nextWeek,
+    // autoclose: true
+    onSelect: function(date) 
+    {
+      
+    }
 });
 
 // Initialize select

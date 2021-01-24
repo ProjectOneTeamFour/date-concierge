@@ -5,30 +5,28 @@
     --white: #ffffff;
 }
 
-main#landing-page {
-    min-height: 100vh;
-}
-
-input#user-name, input#date {
-    background-color: var(--white);
-    padding: 0px 5px;
-}
-
-.card {
-    width: 400px;
-}
-
-.datepicker-date-display {
+/*Background Options */
+.main-background {
     background-color: var(--pink);
 }
 
-.datepicker-day-button {
-    color: var(--grey);
+.section-background {
+    background-color: var(--white);
 }
 
-.datepicker-cancel, 
-.datepicker-clear, 
-.datepicker-today, 
-.datepicker-done {
-    color: var(--pink);
+.grey-background {
+    background-color: var(--grey);
+}
+
+/*Font color options */
+.pink-font {
+    color: var(--pink)
+}
+/*Button Options */
+.nav-button-background {
+    background-color: var(--grey);
+}
+
+.footer-links:hover {
+    color: var(--grey);
 }

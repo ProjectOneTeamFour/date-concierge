@@ -4,55 +4,117 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
+     <!--Import Google Icon Font-->
+     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+     <!--Import materialize.css-->
+     <link type="text/css" rel="stylesheet" href="assets/css/materialize.css"  media="screen,projection"/>
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="./assets/css/styles.css" />
+
     <title>Date Concierge</title>
 </head>
 <body>
     <header>
-        <img src="assets/images/logo-horizontal.png" alt="date concierge logo">
-        <nav>
-            <ul>
-                <li>Change the mood</li>
-                <li>My ♥ list</li>
-            </ul>
+        <nav class="main-background">
+            <div class="nav-wrapper">
+                <img class="brand-logo" src="assets/images/logo-horizontal.png" alt="date concierge logo">
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li class="waves-effect waves-light btn-large nav-button-background">Change the Mood</li>
+                    <li class="waves-effect waves-light btn-large nav-button-background" href="#lovelistmodal">My ♥ List</li>
+                </ul>
+            </div>
         </nav>
 
     </header>
     <main>
-        <h1>Get ready. Get dressed. Here's what we've got lined up for you, <span id="user-name"></span></h1>
-        <p>Based on the weather in <span id="city"></span>, we think you should <span id="in-or-out"></span>.</p>
-        <div id="weather-container">
-            <h3>Tonight's forecast</h3>
-            <p><span id="weather-description"></span> with a chance of love ♥.</p>
-            <div id="current-weather"></div>
+        <div class="container row">
+            <div class="col s6">
+                <div class="main-section-copy">
+                    <h2>Get ready. Get dressed. Here's what we've got lined up for you, <span id="user-name"></span></h2>
+                    <p>Based on the weather in <span id="city"></span>, we think you should <span id="in-or-out"></span>.</p>
+                </div>
+            </div>
+            <div class="col s6">
+                <div id="weather-container">
+                    <h4>Tonight's forecast</h4>
+                    <p><span id="weather-description"></span> with a chance of love ♥.</p>
+                    <div id="current-weather"></div>
+                </div>
+            </div> 
         </div>
-        <div id="restaurant-container">
-            <h3>On the menu</h3>
-            <p>Let's <span id="takeout-dineout"></span>. Check out this great restaurant</p>
-            <br>
-            <div id="restaurant-info"></div>
+        <div class="divider"></div>
+        <div class="container row">
+            <div id="restaurant-container col s6">
+                <h4>On the menu</h4>
+                <p>Let's <span id="takeout-dineout"></span>. Check out this great restaurant</p>
+                <br>
+                <div id="restaurant-info"></div>
+            </div>
+            <div id="movie-or-map-container col s6">
+                <div class="secondary-activity-info"></div>
+            </div>
         </div>
-        <div id="movie-or-map-container">
-            <div class="secondary-activity-info"></div>
+        <div class="container row">
+            <div class="col s6">
+                <button type="submit" class="waves-effect waves-light btn-large nav-button-background">Add this to my ♥ list</button>
+            </div>
+            <div class="col s6">
+                <button type="submit" class="waves-effect waves-light btn-large nav-button-background">Nah, next please!</button>
+            </div>
+              <!-- Love List Modal -->
+        <div id="lovelistmodal" class="modal">
+            <div class="modal-content">
+                <h4>My ♥ list</h4>
+                <p>Here's your list of winning date ideas.</p>
+                <div class="love-list-info"></div>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Back to results</a>
+            </div>
         </div>
-        <button type="submit">Add this to my ♥ list</button>
-        <button type="submit">Nah, next please!</button>
+        <!--End of modal-->
     </main>
-    <footer>
-        <h4>Please date responsibly.</h4>
-    </footer>
+    <footer class="page-footer main-background">
+        <div class="container">
+          <div class="row">
+            <div class="col l6 s12">
+              <h5 class="white-text">Date Concierge</h5>
+              <p class="grey-text text-lighten-4">So we've helped you plan a great night. But the perfect date <i>idea</i> doesn't guarantee a <i>perfect date</i>. We're not legally responsible for what happens next. Don't let a bad date serve as inspiration to call your ex. Please date responsibly.</p>
+            </div>
+            <div class="col l4 offset-l2 s12">
+              <h5 class="white-text">We can only help so much. But here's a bit more...</h5>
+              <ul>
+                <li><a class="grey-text text-lighten-3 hoverable" href="https://bestlifeonline.com/pick-up-lines/">Pick-up lines so terrible, they <i>actually</i> work</a></li>
+                <br>
+                <li><a class="grey-text text-lighten-3 hoverable" href="https://www.self.com/story/16-ways-to-have-an-incredible-first-date">16 ways to have an incredible date</a></li>
+                <br>
+                <li><a class="grey-text text-lighten-3 hoverable" href="https://www.oprahmag.com/life/relationships-love/a28496770/first-date-conversation-starters/">Need help starting the convo? Look no further</a></li>
+                <br>
+                <li><a class="grey-text text-lighten-3 hoverable" href="https://www.25dates.com/blog/the-first-date-what-to-do-and-what-not-to-do/">What to do (and what not to do) on your first date</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright">
+          <div class="container">
+          © 2021 Copyright
+          </div>
+        </div>
+      </footer>
+          
 
     <!-- sources for jquery, jqueryui, touch punch and momentjs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <!--CSS Script-->
+    <script type="text/javascript" src="assets/js/materialize.js"></script>
     <!-- custom scripts -->
     <script src="./assets/js/dateresults.js"></script>
+    <!-- custom scripts from hayley -->
+    <script src="assets/js/dateresults-hayleyjs.js"></script>
 </body>
 </html>

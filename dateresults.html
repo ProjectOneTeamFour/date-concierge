@@ -39,9 +39,20 @@
             </div>
             <div class="col s6">
                 <div id="weather-container">
-                    <h4>Tonight's forecast</h4>
+                    <!-- <div class="card horizontal">
+                        <div class="card-stacked">
+                          <div class="card-content">
+                            <span class="card-title">Selected Date:  </span>
+                            <p><span id="weather-description">, with a chance of love ♥.</p>
+                            <div id="current-weather">
+                                <h3><span>25</span> °C</h3>
+                            </div>
+                          </div>
+                        </div>
+                    </div> -->
+                    <!-- <h4>Date</h4>
                     <p><span id="weather-description"></span> with a chance of love ♥.</p>
-                    <div id="current-weather"></div>
+                    <div id="current-weather"></div> -->
                 </div>
             </div> 
         </div>
@@ -64,7 +75,8 @@
             <div class="col s6">
                 <button id="next-btn" type="click" class="waves-effect waves-light btn-large nav-button-background">Nah, next please!</button>
             </div>
-              <!-- Love List Modal -->
+        </div>
+        <!-- Love List Modal -->
         <div id="lovelistmodal" class="modal">
             <div class="modal-content">
                 <h4>My ♥ list</h4>
@@ -76,6 +88,29 @@
             </div>
         </div>
         <!--End of modal-->
+        <!-- Loading Modal -->
+        <div id="loadingModal" class="modal">
+            <div class="modal-content">
+                <h4>Preparing Date Ideas...</h4>
+                <p>Some catchy sentences (while we determine logic, call APIs and fetch relevant data).</p>
+                <div class="center-align">
+                    <div class="preloader-wrapper big active">
+                        <div class="spinner-layer spinner-blue-only">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End of Loading Modal-->
     </main>
     <footer class="page-footer main-background">
         <div class="container">

@@ -117,3 +117,13 @@ textarea.materialize-textarea:focus:not([readonly])
 {
     border-bottom: 1px solid var(--pink);
 }
+
+#loadingModal {
+    height: 300px;
+    width: 500px;
+    border-radius: 10px;
+}
+
+#loadingModal .modal-content .center-align {
+    margin-top: 30px;
+}

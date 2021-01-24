@@ -112,3 +112,8 @@ textarea.materialize-textarea:focus:not([readonly])
     -webkit-box-shadow: 0 1px 0 0 var(--pink);
     box-shadow: 0 1px 0 0 var(--pink);
 }
+
+.select-wrapper input.select-dropdown:focus 
+{
+    border-bottom: 1px solid var(--pink);
+}

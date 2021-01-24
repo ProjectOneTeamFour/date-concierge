@@ -3,6 +3,7 @@ var nextBtnEl = document.querySelector("#next-btn");
 var saveBtnEl = document.querySelector("#save-btn");
 var movieMapContainerEl = document.querySelector("#movie-or-map-container");
 
+var loadingModalInstance;
 
 //API Keys
 const ZOMATO_API_KEY = '670c5f2e4824fb60c96ab79528421baf';
@@ -28,22 +29,53 @@ var counter = 0;
 //output: coordinates
 var getLocation = function() 
 {
-    // return new Promise(function(resolve, reject) 
-    // {
-    //     navigator.geolocation.getCurrentPosition(resolve, reject);
-    // })
+    return new Promise(function(resolve, reject) 
+    {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+    })
 }
 
+// helper function to format unix timestamp
+let getDateFromTimeStamp = function(timeStamp, timezoneOffset) {
+    return moment.unix(timeStamp + timezoneOffset).utc().format("DD-MM-YYYY");
+}
 
 //get weather data
 //input : coordinates , date 
 //output: tempreture
 var getWeatherData = function() 
 {
-    // let urlForecast = `https://api.openweathermap.org/data/2.5/onecall?lat=${parseFloat(userLocation.lat)}&lon=${parseFloat(userLocation.lng)}&units=metric&exclude=minutely,hourly,alerts&appid=${OWM_API_KEY}`;
-    // return fetch(urlForecast);
+    let urlForecast = `https://api.openweathermap.org/data/2.5/onecall?lat=${parseFloat(userLocation.latitude)}&lon=${parseFloat(userLocation.longitude)}&units=metric&exclude=minutely,hourly,alerts&appid=${OWM_API_KEY}`;
+    return fetch(urlForecast);
 }
 
+var generateWeatherCard = function(temperature, weatherDescription, weatherIcon) { 
+    var cardEl = $("<div>")
+        .addClass("card horizontal")
+        .html(`
+            <div class="card-stacked">
+                <div class="card-content">
+                    <span class="card-title">Selected Date: ${date} </span>
+                    <p> ${weatherDescription}, with a chance of love ♥.</p>
+                    <div id="current-weather">
+                        <div>
+                            <img
+                                width="80px" 
+                                src="https://openweathermap.org/img/wn/${weatherIcon}.png"
+                                alt=${weatherDescription}
+                            </img>
+                            <h3>${parseFloat(temperature).toFixed(1)}°C</h3>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        `);
+    
+    $("#weather-container")
+        .empty()
+        .append(cardEl);
+}
 
 //get types of resturants and movies based on the mood
 //input : user mood
@@ -107,7 +139,7 @@ var getMoodTypes = function()
 
         case "adventurous":
             result.genre = adventurous.genres[Math.floor(Math.random()*adventurous.genres.length)];
-            result.cuisine = adventurouss.cuisines[Math.floor(Math.random()*adventurous.cuisines.length)];
+            result.cuisine = adventurous.cuisines[Math.floor(Math.random()*adventurous.cuisines.length)];
             return result;
 
         case "relaxed":
@@ -131,12 +163,6 @@ var getRestaurantData = function()
     // var lat = location.coords.latitude;
     // var lng = location.coords.longitude;
     // var searchRadius = 1000;
-
-    // userLocation = 
-    // {
-    //     lat: location.coords.latitude,
-    //     lng: location.coords.longitude
-    // };
 
     // var url = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lng}&radius=${searchRadius}`;
     // var config = 
@@ -219,52 +245,66 @@ var getMovieData = function()
 // choose indoor or outdoor then display the results
 var displayResults = function() 
 {
-    // if(navigator.geolocation) 
-    // {
-    //     getLocation()
-    //         .then(getRestaurantList)
-    //         .then(function(response) 
-    //         {
-    //             if(response.ok)
-    //             {
-    //                 return response.json();
-    //             } 
-    //             else 
-    //             {
-    //                 alert("Error:" + response.statusText); // TO-DO: need to convert this to a modal
-    //             }
-    //         })
-    //         .then(function(data) 
-    //         {
-    //             if(!data)
-    //             {
-    //                 return;
-    //             }
-    //             console.log("Restaurant Data", data);
-    //             return getWeatherData();
-    //         })
-    //         .then(function(response) 
-    //         {
-    //             if(response.ok)
-    //             {
-    //                 return response.json();
-    //             } 
-    //             else 
-    //             {
-    //                 alert("Error:" + response.statusText); // TO-DO: need to convert this to a modal
-    //             }
-    //         })
-    //         .then(function(data) 
-    //         {
-    //             if(!data)
-    //             {
-    //                 return;
-    //             }
-    //             console.log("Weather Data", data);
-    //             document.location.replace("./dateresults.html"+"?username="+userName+"&date="+date+"&mood="+mood);
-    //         })
-    //         .catch(error => console.log(error));
-    // }       
+    if(navigator.geolocation) 
+    {
+        getLocation()
+            .then(function(location)
+            {
+                userLocation.latitude = location.coords.latitude;
+                userLocation.longitude = location.coords.longitude;
+                return getWeatherData();
+            })
+            .then(function(response) 
+            {
+                if(response.ok)
+                {
+                    return response.json();
+                } 
+                else 
+                {
+                    alert("Error:" + response.statusText); // TO-DO: need to convert this to a modal
+                }
+            })
+            .then(function(data) 
+            {
+                if(!data)
+                {
+                    return;
+                }
+                data.daily.map((item, ind) => {
+                    var tempDate = getDateFromTimeStamp(item.dt, data.timezone_offset);
+                    if (tempDate === date) {
+                        // console.log(item.temp.eve, item.weather[0].description, item.weather[0].icon, ind);
+                        generateWeatherCard(item.temp.eve, item.weather[0].description, item.weather[0].icon);
+                    }
+                });
+                // generateWeatherCard()
+                loadingModalInstance.close();
+                console.log("Weather Data", data);
+                // return getWeatherData();
+            })
+            // .then(function(response) 
+            // {
+            //     if(response.ok)
+            //     {
+            //         return response.json();
+            //     } 
+            //     else 
+            //     {
+            //         alert("Error:" + response.statusText); // TO-DO: need to convert this to a modal
+            //     }
+            // })
+            // .then(function(data) 
+            // {
+            //     if(!data)
+            //     {
+            //         return;
+            //     }
+            //     console.log("Weather Data", data);
+            //     document.location.replace("./dateresults.html"+"?username="+userName+"&date="+date+"&mood="+mood);
+            // })
+            .catch(error => console.log(error));
+    }       
 }
 
 // show next movie and resturant
@@ -296,11 +336,16 @@ var loadList = function()
 //     // instances.open();
 // });
 // // Or with jQuery
-// $(document).ready(function()
-// {
-//     $('.modal').modal();
-//     // instance.open();
-// }); 
+$(document).ready(function()
+{
+    $('.modal').modal(); // initialize modal
+    // open loading modal with spinner
+    loadingModalInstance = M.Modal.getInstance($('#loadingModal')); 
+    loadingModalInstance.options.dismissible = false;
+    loadingModalInstance.open();
+}); 
+
+displayResults();
 
 // getMovieData();
 nextBtnEl.addEventListener("click", nextBtnHandler);

@@ -169,8 +169,8 @@ var getMovieData = function()
         {
             if (genres[i].name === movieGenre)
             {
-                return fetch("https://api.themoviedb.org/3/discover/movie?api_key="+ TMDB_API_KEY 
-                                +"&with_genres="+genres[i].id+"&with_original_language=en&sort_by=popularity.desc&release_date.gte=1990");
+                return fetch("https://api.themoviedb.org/3/discover/movie?api_key="+ TMDB_API_KEY +
+                             "&with_genres="+genres[i].id+"&with_original_language=en&include_adult=exclude&sort_by=popularity.desc&release_date.gte=1990");
             }
         }
     })
@@ -189,6 +189,10 @@ var getMovieData = function()
         titleEl.className = "card-title";
         var voteEl = document.createElement("p");
         voteEl.textContent ="Rate: " + movie.vote_average + "/10";
+
+        var genreEl = document.createElement("p");
+        genreEl.textContent ="Genre: " + movieGenre;
+
         var releaseDateEl = document.createElement("p");
         releaseDateEl.textContent ="Release Date: " + movie.release_date;     
         var overviewEl = document.createElement("p");
@@ -201,8 +205,9 @@ var getMovieData = function()
         var movieDetailsEl = document.createElement("div");
         movieDetailsEl.className = "card-content";
         movieDetailsEl.appendChild(titleEl);
-        movieDetailsEl.appendChild(voteEl);
         movieDetailsEl.appendChild(releaseDateEl);
+        movieDetailsEl.appendChild(voteEl);
+        movieDetailsEl.appendChild(genreEl);
         movieDetailsEl.appendChild(overviewEl);
 
         movieMapContainerEl.appendChild(movieImgEl);

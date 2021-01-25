@@ -2,11 +2,12 @@
 var nextBtnEl = document.querySelector("#next-btn");
 var saveBtnEl = document.querySelector("#save-btn");
 var movieMapContainerEl = document.querySelector("#movie-or-map-container");
-
+var restaurantContainerEl = document.querySelector("#restaurant-info");
+var temperature = "";
 var loadingModalInstance;
 
 //API Keys
-const ZOMATO_API_KEY = '670c5f2e4824fb60c96ab79528421baf';
+const ZOMATO_API_KEY = "670c5f2e4824fb60c96ab79528421baf";
 const OWM_API_KEY = "ce455bd02a51e6ea3ab658a42367d8f2";
 const TMDB_API_KEY = "5733f541d83befd903f222e59340f8b2";
 
@@ -77,6 +78,55 @@ var generateWeatherCard = function(temperature, weatherDescription, weatherIcon)
         .append(cardEl);
 }
 
+var generateRestaurantCard = function(restaurant) { 
+    restaurantContainerEl.innerHTML = '';
+    var inOrOut = "DINE OUT";
+    if (temperature < 10){
+        inOrOut = "STAY IN";
+    };
+    var x = Math.floor(Math.random() * (restaurant.length));
+    if (restaurant[x].restImg) {
+        var imageEl = document.createElement("img");
+        imageEl.src = restaurant[x].restImg;
+        imageEl.setAttribute("id", "restImg");
+        var restNameEl = document.createElement("span");
+        restNameEl.textContent =restaurant[x].restName;
+        restNameEl.className = "card-title";
+        var inOrOutEl = document.createElement("p");
+        inOrOutEl.textContent =inOrOut;
+        var addressEl = document.createElement("p");
+        addressEl.textContent =restaurant[x].address;
+        var cuisineEl = document.createElement("p");
+        cuisineEl.textContent =restaurant[x].cuisine;
+        var costForTwoEl = document.createElement("p");
+        costForTwoEl.textContent ="Average cost for 2: $" + restaurant[x].costForTwo;
+        var hoursEl = document.createElement("p");
+        hoursEl.textContent =restaurant[x].timings;
+        var restImgEl = document.createElement("div");
+        restImgEl.className= "card-image";
+        restImgEl.appendChild(imageEl);
+
+        var restDetailsEl = document.createElement("div");
+        restDetailsEl.className = "card-content";
+        restDetailsEl.appendChild(inOrOutEl);
+        restDetailsEl.appendChild(restNameEl);
+        restDetailsEl.appendChild(addressEl);
+        restDetailsEl.appendChild(cuisineEl);
+        restDetailsEl.appendChild(costForTwoEl);
+        restDetailsEl.appendChild(hoursEl);
+
+        restaurantContainerEl.appendChild(restImgEl);
+        restaurantContainerEl.appendChild(restDetailsEl);
+        $("#restImg").css({
+            "max-width":"100%",
+            "max-height":"100%"
+        });
+    } else {
+        getRestaurantData();
+    };
+    
+}
+
 //get types of resturants and movies based on the mood
 //input : user mood
 //output: movie category , food type
@@ -86,37 +136,37 @@ var getMoodTypes = function()
     {
         genres : ["Action","Adventure","Crime","Documentary","History","Horro","Mystery","Science Fiction","Thriller","War","Western","Drama","Fantasy"],
         cuisines : [
-                    "Afghan","Afghani","African","Arabian","Argentine","Armenian","Australian","Austrian",
-                    "Bangladeshi","Brazilian","British","Bubble Tea","Burmese","Cajun","California","Cambodian",
-                    "Cantonese","Caribbean","Central Asian","Colombian","Cuban","Dim Sum","Eastern European",
-                    "Egyptian","Ethiopian","European","Filipino","First Nations","Fusion","Georgian","German",
-                    "Greek","Hakka Chinese","Hawaiian","Hong Kong Style","Hungarian","Indian","Indonesian",
-                    "International","Iranian","Irish","Israeli","Jamaican","Japanese","Jewish","Korean",
-                    "Latin American","Lebanese","Malaysian","Mediterranean","Mexican","Middle Eastern",
-                    "Modern European","Moldovan","Mongolian","Moroccan","Nepalese","New Mexican","Nigerian",
-                    "North Indian","Northern Chinese","Oriental","Pacific Northwest","Pakistani","Pan Asian",
-                    "Patisserie","Persian","Peruvian","Quebecois","Ramen","Russian","Salad","Salvadorean",
-                    "Thai","Tibetan","Trinbagonian","Turkish","Ukrainian","Vegetarian","Venezuelan","Vietnamese",
-                    "West Indian","Xinjiang","Yunnan","Polish","Portuguese","Swedish","Swiss","Syrian","Taiwanese",
-                    "Tanzanian","South Indian","Southern","Southwestern","Spanish","Sri Lankan","Shanghai",
-                    "Sichuan","Singaporean","Somali","Scottish"
+                    "Afghan-1035","Afghani-6","African-152","Arabian-4","Argentine-151","Armenian-175","Australian-131","Austrian-201",
+                    "Bangladeshi-145","Brazilian-159","British-133","Bubble Tea-247","Burmese-22","Cajun-491","California-956","Cambodian-111",
+                    "Cantonese-121","Caribbean-158","Central Asian-202","Colombian-287","Cuban-153","Dim Sum-411","Eastern European-651",
+                    "Egyptian-146","Ethiopian-149","European-38","Filipino-112","First Nations-421","Fusion-274","Georgian-205","German-134",
+                    "Greek-156","Hakka Chinese-441","Hawaiian-521","Hong Kong Style-791","Hungarian-228","Indian-148","Indonesian-114",
+                    "International-154","Iranian-140","Irish-135","Israeli-218","Jamaican-207","Japanese-60","Jewish-265","Korean-67",
+                    "Latin American-136","Lebanese-66","Malaysian-69","Mediterranean-70","Mexican-73","Middle Eastern-137",
+                    "Modern European-294","Moldovan-591","Mongolian-74","Moroccan-147","Nepalese-117","New Mexican-995","Nigerian-296",
+                    "North Indian-50","Northern Chinese-861","Oriental-278","Pacific Northwest-963","Pakistani-139","Pan Asian-209",
+                    "Patisserie-183","Persian-81","Peruvian-162","Quebecois-511","Ramen-320","Russian-84","Salad-998","Salvadorean-601",
+                    "Thai-95","Tibetan-93","Trinbagonian-631","Turkish-142","Ukrainian-451","Vegetarian-308","Venezuelan-641","Vietnamese",
+                    "Vietnamese-99","Xinjiang-851","Yunnan-841","Polish-219","Portuguese-87","Swedish-211","Swiss-213","Syrian-212","Taiwanese-190",
+                    "Tanzanian-621","South Indian-85","Southern-471","Southwestern-966","Spanish-89","Sri Lankan-86","Shanghai-831",
+                    "Sichuan-128","Singaporean-119","Somali-611","Scottish-210"
                     ]
     };
     var relaxed = 
     {
         genres : ["Animation","Comedy","Family","Music","TV Movie"],
         cuisines : [
-                    "American","Asian","Asian Fusion","BBQ","Bagels","Bakery","Bar Food","Beverages",
-                    "Brasserie","Breakfast","Burger","Cafe","Chinese","Coffee and Tea","Canadian",
-                    "Continental","Deli","Desserts","Diner","Donuts","Drinks Only","Fast Food","Finger Food",
-                    "Fish and Chips","Frozen Yogurt","Grill","Healthy Food","Ice Cream","Juices","Kebab",
-                    "Pizza","Pub Food","Salad","Sandwich","Tea","Tex-Mex","Soul Food"
+                    "American-1","Asian-3","Asian Fusion-401","BBQ-193","Bagels-955","Bakery-5","Bar Food-227","Beverages-270",
+                    "Brasserie-195","Breakfast-182","Burger-168","Cafe-30","Chinese-25","Coffee and Tea-161","Canadian-381",
+                    "Continental-35","Deli-192","Desserts-100","Diner-541","Donuts-959","Drinks Only-268","Fast Food-40","Finger Food-271",
+                    "Fish and Chips-298","Frozen Yogurt-501","Grill-181","Healthy Food-143","Ice Cream-233","Juices-164","Kebab-178",
+                    "Pizza-82","Pub Food-983","Salad-998","Sandwich-304","Tea-163","Tex-Mex-150","Soul Food-461"
                     ]
     };
     var romantic = 
     {
         genres : ["Romance"],
-        cuisines : ["Steak","Sushi","French","Crepes","Italian","Tapas","Seafood"]
+        cuisines : ["Steak-141","Sushi-177","French-45","Crepes-881","Italian-55","Tapas-179","Seafood-83"]
     };
     var spontaneous = 
     {
@@ -126,8 +176,8 @@ var getMoodTypes = function()
 
     var result =
     {
-        genres : "",
-        cuisines : ""
+        genre : "",
+        cuisine : ""
     };
 
     switch(mood)
@@ -160,25 +210,66 @@ var getMoodTypes = function()
 //output: All resturant data
 var getRestaurantData = function() 
 {
-    // var lat = location.coords.latitude;
-    // var lng = location.coords.longitude;
-    // var searchRadius = 1000;
+    var restaurant = [{restName:"", cuisine:"", address:"", restImg:"", costForTwo:"", restHours:""}];
+    var lat = userLocation.latitude;
+    var lng = userLocation.longitude;
+    var cuisine = getMoodTypes().cuisine;
+    var cuisineID = cuisine.split("-");
+    var searchRadius = 2500;
+    
+    console.log(cuisine);
+    console.log(cuisineID);
+    var url = `https://developers.zomato.com/api/v2.1/search?entity_type=metro&lat=${lat}&lon=${lng}&radius=${searchRadius}&cuisines=${cuisineID}&sort=rating`;
+    //https://developers.zomato.com/api/v2.1/search?entity_type=metro&lat=43.7080973&lon=-79.395311499&radius=2500&cuisines=142&sort=rating
+    //var urlcuisines = "https://developers.zomato.com/api/v2.1/cuisines?city_id=89"
+    console.log(url);
+    var config = 
+    {
+        headers: 
+        {
+            "user-key": ZOMATO_API_KEY
+        }
+    };
+    fetch(url, config).then(function(response) {
+        // request was successful
+        if (response.ok) {
+          response.json().then(function(data) {
+            console.log(data);
+            //displayCuisine(data);
 
-    // var url = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lng}&radius=${searchRadius}`;
-    // var config = 
-    // {
-    //     headers: 
-    //     {
-    //         "user-key": ZOMATO_API_KEY
-    //     }
-    // };
-    // return fetch(url, config);
-}
-
+            for(var i =0; i < data.restaurants.length; i++){
+                restaurant[i] = {
+                  restName: data.restaurants[i].restaurant.name,
+                  cuisine: data.restaurants[i].restaurant.cuisines,
+                  address: data.restaurants[i].restaurant.location.address,
+                  restImg: data.restaurants[i].restaurant.featured_image,
+                  costForTwo: data.restaurants[i].restaurant.average_cost_for_two,
+                  restHours: data.restaurants[i].restaurant.timings
+                };
+                if (i===4) {
+                    break;
+                };
+                
+           //console.log(data.cuisines[i].cuisine.cuisine_name,"-"+data.cuisines[i].cuisine.cuisine_id);
+            };
+            console.log(restaurant);
+            generateRestaurantCard(restaurant);
+          });
+        } else {
+            alert("Error: " + response.statusText);
+        }
+    })
+    .catch(function(error) {
+            alert("Unable to get data");
+    });
+    
+};
 
 //get resturants data
 //input : movie category
 //output: All movie data
+
+
 var getMovieData = function() 
 {
     var movieGenre = getMoodTypes().genre;//"Comedy"; //remove and add genre from getMoodTypes() function
@@ -275,12 +366,17 @@ var displayResults = function()
                     var tempDate = getDateFromTimeStamp(item.dt, data.timezone_offset);
                     if (tempDate === date) {
                         // console.log(item.temp.eve, item.weather[0].description, item.weather[0].icon, ind);
+                        temperature = item.temp.eve;
                         generateWeatherCard(item.temp.eve, item.weather[0].description, item.weather[0].icon);
                     }
                 });
                 // generateWeatherCard()
                 loadingModalInstance.close();
                 console.log("Weather Data", data);
+                //NOT SURE IF THIS IS WHERE IT SHOULD GO<< BUT PLACING HERE FOR NOW
+                getRestaurantData();
+
+
                 // return getWeatherData();
             })
             // .then(function(response) 

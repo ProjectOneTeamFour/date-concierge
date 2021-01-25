@@ -52,22 +52,23 @@ var getWeatherData = function()
 
 var generateWeatherCard = function(temperature, weatherDescription, weatherIcon) { 
     var cardEl = $("<div>")
-        .addClass("card horizontal")
+        .addClass("card")
+        .attr("id", "weather-card")
         .html(`
-            <div class="card-stacked">
-                <div class="card-content">
-                    <span class="card-title">Selected Date: ${date} </span>
-                    <p> ${weatherDescription}, with a chance of love ♥.</p>
-                    <div id="current-weather">
-                        <div>
+            <div class="card-content">
+                <span class="card-title">Selected Date: ${date} </span>
+                <p> ${weatherDescription}, with a chance of love ♥</p>
+                <div id="current-weather">
+                    <div class="row">
+                        <div class="col s5">
                             <img
-                                width="80px" 
-                                src="https://openweathermap.org/img/wn/${weatherIcon}.png"
+                                src="https://openweathermap.org/img/wn/${weatherIcon}@2x.png"
                                 alt=${weatherDescription}
                             </img>
-                            <h3>${parseFloat(temperature).toFixed(1)}°C</h3>
                         </div>
-                        
+                        <div class="col s7" id="div-temperature">
+                            <span>${parseFloat(temperature).toFixed(0)}°C</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -265,11 +266,9 @@ var getRestaurantData = function()
     
 };
 
-//get resturants data
+//get movie data
 //input : movie category
 //output: All movie data
-
-
 var getMovieData = function() 
 {
     var movieGenre = getMoodTypes().genre;//"Comedy"; //remove and add genre from getMoodTypes() function
@@ -305,7 +304,7 @@ var getMovieData = function()
         titleEl.textContent =movie.title;
         titleEl.className = "card-title";
         var voteEl = document.createElement("p");
-        voteEl.textContent ="Rate: " + movie.vote_average + "/10";
+        voteEl.textContent ="Rating: " + movie.vote_average + "/10";
 
         var genreEl = document.createElement("p");
         genreEl.textContent ="Genre: " + movieGenre;
@@ -362,18 +361,20 @@ var displayResults = function()
                 {
                     return;
                 }
+                // Populate weather data
                 data.daily.map((item, ind) => {
                     var tempDate = getDateFromTimeStamp(item.dt, data.timezone_offset);
                     if (tempDate === date) {
-                        // console.log(item.temp.eve, item.weather[0].description, item.weather[0].icon, ind);
                         temperature = item.temp.eve;
                         generateWeatherCard(item.temp.eve, item.weather[0].description, item.weather[0].icon);
+                        if(item.temp.eve < 10.0){
+                            getMovieData();
+                        }
                     }
                 });
-                // generateWeatherCard()
                 loadingModalInstance.close();
                 console.log("Weather Data", data);
-                //NOT SURE IF THIS IS WHERE IT SHOULD GO<< BUT PLACING HERE FOR NOW
+                //NOT SURE IF THIS IS WHERE IT SHOULD GO<< BUT PLACING HERE FOR NOW (CURTIS)
                 getRestaurantData();
 
 
@@ -423,6 +424,14 @@ var loadList = function()
     
 }
 
+// initialize page view
+var initializePageView = function() {
+    $("#user-name").text(username);
+    if($.isEmptyObject(userLocation)) {
+        displayResults();
+    }
+}
+
 //open Modal
 
 // document.addEventListener('DOMContentLoaded', function() 
@@ -441,7 +450,8 @@ $(document).ready(function()
     loadingModalInstance.open();
 }); 
 
-displayResults();
+// displayResults();
+initializePageView();
 
 // getMovieData();
 nextBtnEl.addEventListener("click", nextBtnHandler);

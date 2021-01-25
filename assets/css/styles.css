@@ -127,3 +127,26 @@ textarea.materialize-textarea:focus:not([readonly])
 #loadingModal .modal-content .center-align {
     margin-top: 30px;
 }
+
+main#landing-page {
+    min-height: 100vh;
+}
+
+#main-page-card {
+    width: 410px;
+}
+
+#weather-card {
+    width: 350px;
+    height: 180px;
+    margin-left: auto!important;
+}
+
+#div-temperature {
+    font-size: 3rem;
+    padding-top: 10px;
+}
+
+#movie-or-map-container {
+    max-width: 450px;
+}

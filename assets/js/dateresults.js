@@ -5,7 +5,6 @@ var movieMapContainerEl = document.querySelector("#movie-or-map-container");
 var restaurantContainerEl = document.querySelector("#restaurant-info");
 var favListEl = document.querySelector("#fav-list");
 
-var temperature = "";
 var loadingModalInstance;
 var messageModalInstance;
 
@@ -25,6 +24,9 @@ var mood = params.get('mood');
 //variables
 var userLocation = {}; // stores user location
 var genreList;
+var temperature = "";
+var controlTemp = -20;
+var inOrOut = "DINE OUT";
 
 var myFavList = [];
 
@@ -109,13 +111,27 @@ var generateWeatherCard = function(temperature, weatherDescription, weatherIcon)
         .empty()
         .append(cardEl);
 }
+var generateMapCard = function(restLat, restLng) { 
+    var lat = userLocation.latitude;
+    var lng = userLocation.longitude;
+    var cardEl = $("<div>")
+        //.addClass("card-content")
+        .attr("id", "Map-Card")
+        .html(`
+            <div class="card-content">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d11535.357946040902!2dv${restLng}!3d${restLat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1
+            !4m11!3e6!4m4!2s${lat}%2C%20${lng}!3m2!1d${lat}!2d${lng}!4m4!2s${restLat}%2C$${restLng}!3m2!1d${restLat}!2d${restLng}!5e0!3m2!1sen!2sca!4v1611684305916
+            !5m2!1sen!2sca" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+        `);
+    
+    $("#movie-or-map-container")
+        .empty()
+        .append(cardEl);
+}
 
 var generateRestaurantCard = function(restaurant) { 
     restaurantContainerEl.innerHTML = '';
-    var inOrOut = "DINE OUT";
-    if (temperature < 10){
-        inOrOut = "STAY IN";
-    };
+    
     var x = Math.floor(Math.random() * (restaurant.length));
     if (restaurant[x].restImg) {
         var imageEl = document.createElement("img");
@@ -177,6 +193,10 @@ var generateRestaurantCard = function(restaurant) {
     } else {
         getRestaurantData();
     };
+    if (inOrOut === "DINE OUT"){
+        generateMapCard(restaurant[x].restLat, restaurant[x].restLng);
+    };
+    
     
 }
 
@@ -263,7 +283,7 @@ var getMoodTypes = function()
 //output: All restaurant data
 var getRestaurantData = function() 
 {
-    var restaurant = [{restName:"", cuisine:"", address:"", restImg:"", costForTwo:"", restHours:""}];
+    var restaurant = [{restName:"", cuisine:"", address:"", restImg:"", costForTwo:"", restHours:"", restLat:"", restLng:"", phone:""}];
     var lat = userLocation.latitude;
     var lng = userLocation.longitude;
     var cuisine = getMoodTypes().cuisine;
@@ -285,7 +305,7 @@ var getRestaurantData = function()
         if (response.ok) {
           response.json().then(function(data) {
             //displayCuisine(data);
-
+            console.log(data);
             for(var i =0; i < data.restaurants.length; i++){
                 restaurant[i] = {
                   restName: data.restaurants[i].restaurant.name,
@@ -293,7 +313,10 @@ var getRestaurantData = function()
                   address: data.restaurants[i].restaurant.location.address,
                   restImg: data.restaurants[i].restaurant.featured_image,
                   costForTwo: data.restaurants[i].restaurant.average_cost_for_two,
-                  restHours: data.restaurants[i].restaurant.timings
+                  restHours: data.restaurants[i].restaurant.timings,
+                  restLat: data.restaurants[i].restaurant.location.latitude,
+                  restLng: data.restaurants[i].restaurant.location.longitude,
+                  phone: data.restaurants[i].restaurant.phone_numbers
                 };
                 if (i===4) {
                     break;
@@ -319,119 +342,123 @@ var getRestaurantData = function()
 //output: All movie data
 var getMovieData = function() 
 {
-    var movieGenre = getMoodTypes().genre;
-    fetch("https://api.themoviedb.org/3/genre/movie/list?api_key="+ TMDB_API_KEY +"&language=en-US")
-    .then(function(response)
-    {
-        return response.json()
-    })
-    .then(function(data)
-    {
-        var genres = data.genres;
-        var pageNo = Math.floor(Math.random() * (50))+1;
-        for(var i =0; i<genres.length; i++)
+    //placed this here so its not created if the weather is triggered
+    if (temperature < controlTemp){
+        inOrOut = "STAY IN";
+        var movieGenre = getMoodTypes().genre;
+        fetch("https://api.themoviedb.org/3/genre/movie/list?api_key="+ TMDB_API_KEY +"&language=en-US")
+        .then(function(response)
         {
-            if (genres[i].name === movieGenre)
-            {
-                return fetch("https://api.themoviedb.org/3/discover/movie?api_key="+ TMDB_API_KEY +
-                             "&with_genres="+ genres[i].id +
-                             "&with_original_language=en" +
-                             "&include_adult=exclude" +
-                             "&sort_by=popularity.desc" +
-                             "&page=" + pageNo +
-                             "&primary_release_date.gte=1990");
-            }
-        }
-    })
-    .then(function(response)
-    {
-        return response.json();
-    })
-    .then(function(data)
-    {
-        var x = Math.floor(Math.random() * (data.results.length));
-        var movie = data.results[x];
-
-        var imageEl = document.createElement("img");
-        imageEl.id = "movie-img";
-        var imgURL =  movie.poster_path || movie.backdrop_path;
-        console.log(imgURL,movie.poster_path,movie.backdrop_path);
-        imageEl.src = "https://image.tmdb.org/t/p/w200" + imgURL;
-
-
-        var titleEl = document.createElement("span");
-        titleEl.id = "movie-title";
-        titleEl.classList = "card-title";
-        titleEl.textContent =movie.title;
-
-        var voteEl = document.createElement("p");
-        voteEl.id = "movie-vote";
-        voteEl.textContent ="Rating: " + movie.vote_average + "/10";
-
-        var genreEl = document.createElement("p");
-        genreEl.id = "movie-genre";
-        genreEl.textContent ="Genre:";
-        genreList = movie.genre_ids;
-
-        var releaseDateEl = document.createElement("p");
-        releaseDateEl.id = "movie-releaseDate"
-        releaseDateEl.textContent ="Release Date: " + movie.release_date;     
-        
-        var overviewEl = document.createElement("p");
-        overviewEl.id = "movie-overview";
-        overviewEl.textContent ="Overview: " +movie.overview;
-
-        var movieImgEl = document.createElement("div");
-
-        movieImgEl.className= "card-image";
-        movieImgEl.appendChild(imageEl);
-
-        var movieDetailsEl = document.createElement("div");
-        movieDetailsEl.className = "card-content";
-
-        movieDetailsEl.appendChild(titleEl);
-        movieDetailsEl.appendChild(releaseDateEl);
-        movieDetailsEl.appendChild(genreEl);
-        movieDetailsEl.appendChild(voteEl);
-        movieDetailsEl.appendChild(overviewEl);
-
-        movieMapContainerEl.appendChild(movieImgEl);
-        movieMapContainerEl.appendChild(movieDetailsEl);
-
-        fav.movie.title = movie.title;
-        fav.movie.rate = "Rating: " + movie.vote_average + "/10";
-        fav.movie.releaseDate = "Release Date: " + movie.release_date; 
-        fav.movie.overview ="Overview: " +movie.overview;
-        fav.movie.img ="https://image.tmdb.org/t/p/w200" + imgURL;
-
-        return fetch("https://api.themoviedb.org/3/genre/movie/list?api_key="+ TMDB_API_KEY +"&language=en-US");
-    })
-    .then(function(response)
-    {
-        return response.json()
-    })
-    .then(function(data)
-    {
-        var movieGenreNames = "";
-        var allGenres = data.genres;
-        for(var i =0; i<genreList.length; i++)
+            return response.json()
+        })
+        .then(function(data)
         {
-            for(var j =0; j<allGenres.length; j++)
+            var genres = data.genres;
+            var pageNo = Math.floor(Math.random() * (50))+1;
+            for(var i =0; i<genres.length; i++)
             {
-                if (genreList[i] === allGenres[j].id)
+                if (genres[i].name === movieGenre)
                 {
-                    movieGenreNames += " " + allGenres[j].name+",";
-                    break;
+                    return fetch("https://api.themoviedb.org/3/discover/movie?api_key="+ TMDB_API_KEY +
+                                "&with_genres="+ genres[i].id +
+                                "&with_original_language=en" +
+                                "&include_adult=exclude" +
+                                "&sort_by=popularity.desc" +
+                                "&page=" + pageNo +
+                                "&primary_release_date.gte=1990");
                 }
-
             }
-        }
+        })
+        .then(function(response)
+        {
+            return response.json();
+        })
+        .then(function(data)
+        {
+            var x = Math.floor(Math.random() * (data.results.length));
+            var movie = data.results[x];
 
-        var genreEl= document.querySelector("#movie-genre")
-        genreEl.textContent += movieGenreNames;
-        fav.movie.genre = genreEl.textContent;
+            var imageEl = document.createElement("img");
+            imageEl.id = "movie-img";
+            var imgURL =  movie.poster_path || movie.backdrop_path;
+            console.log(imgURL,movie.poster_path,movie.backdrop_path);
+            imageEl.src = "https://image.tmdb.org/t/p/w200" + imgURL;
 
-    });
+
+            var titleEl = document.createElement("span");
+            titleEl.id = "movie-title";
+            titleEl.classList = "card-title";
+            titleEl.textContent =movie.title;
+
+            var voteEl = document.createElement("p");
+            voteEl.id = "movie-vote";
+            voteEl.textContent ="Rating: " + movie.vote_average + "/10";
+
+            var genreEl = document.createElement("p");
+            genreEl.id = "movie-genre";
+            genreEl.textContent ="Genre:";
+            genreList = movie.genre_ids;
+
+            var releaseDateEl = document.createElement("p");
+            releaseDateEl.id = "movie-releaseDate"
+            releaseDateEl.textContent ="Release Date: " + movie.release_date;     
+            
+            var overviewEl = document.createElement("p");
+            overviewEl.id = "movie-overview";
+            overviewEl.textContent ="Overview: " +movie.overview;
+
+            var movieImgEl = document.createElement("div");
+
+            movieImgEl.className= "card-image";
+            movieImgEl.appendChild(imageEl);
+
+            var movieDetailsEl = document.createElement("div");
+            movieDetailsEl.className = "card-content";
+
+            movieDetailsEl.appendChild(titleEl);
+            movieDetailsEl.appendChild(releaseDateEl);
+            movieDetailsEl.appendChild(genreEl);
+            movieDetailsEl.appendChild(voteEl);
+            movieDetailsEl.appendChild(overviewEl);
+
+            movieMapContainerEl.appendChild(movieImgEl);
+            movieMapContainerEl.appendChild(movieDetailsEl);
+
+            fav.movie.title = movie.title;
+            fav.movie.rate = "Rating: " + movie.vote_average + "/10";
+            fav.movie.releaseDate = "Release Date: " + movie.release_date; 
+            fav.movie.overview ="Overview: " +movie.overview;
+            fav.movie.img ="https://image.tmdb.org/t/p/w200" + imgURL;
+
+            return fetch("https://api.themoviedb.org/3/genre/movie/list?api_key="+ TMDB_API_KEY +"&language=en-US");
+        })
+        .then(function(response)
+        {
+            return response.json()
+        })
+        .then(function(data)
+        {
+            var movieGenreNames = "";
+            var allGenres = data.genres;
+            for(var i =0; i<genreList.length; i++)
+            {
+                for(var j =0; j<allGenres.length; j++)
+                {
+                    if (genreList[i] === allGenres[j].id)
+                    {
+                        movieGenreNames += " " + allGenres[j].name+",";
+                        break;
+                    }
+
+                }
+            }
+
+            var genreEl= document.querySelector("#movie-genre")
+            genreEl.textContent += movieGenreNames;
+            fav.movie.genre = genreEl.textContent;
+
+        });
+    };
 }
 
 

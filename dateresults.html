@@ -22,7 +22,7 @@
             <div class="nav-wrapper">
                 <img class="brand-logo" src="assets/images/logo-horizontal.png" alt="date concierge logo">
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li class="waves-effect waves-light btn-large nav-button-background">Change the Mood</li>
+                    <li class="waves-effect waves-light btn-large nav-button-background" id="change-input">Change Input</li>
                     <li class="waves-effect waves-light btn-large nav-button-background" id="fav-list-nav"  href="#lovelistmodal">My ♥ List</li>
                 </ul>
             </div>
@@ -78,7 +78,7 @@
                 <a href="#!" class="modal-close waves-effect waves-green btn-flat">Back to results</a>
             </div>
         </div>
-        <!--End of modal-->
+        <!--End of Love List Modal-->
         <!-- Loading Modal -->
         <div id="loadingModal" class="modal">
             <div class="modal-content">
@@ -102,7 +102,13 @@
             </div>
         </div>
         <!--End of Loading Modal-->
-
+        <!-- Message Modal -->
+        <div id="messageModal" class="modal">
+            <div class="modal-content">
+                <p id="message"></p>
+            </div>
+        </div>
+        <!--End of Message Modal-->
 
     </main>
     <footer class="page-footer main-background">

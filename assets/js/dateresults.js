@@ -3,6 +3,8 @@ var nextBtnEl = document.querySelector("#next-btn");
 var saveBtnEl = document.querySelector("#save-btn");
 var movieMapContainerEl = document.querySelector("#movie-or-map-container");
 var restaurantContainerEl = document.querySelector("#restaurant-info");
+var favListEl = document.querySelector("#fav-list");
+
 var temperature = "";
 var loadingModalInstance;
 
@@ -21,7 +23,22 @@ var mood = params.get('mood');
 
 //variables
 var userLocation = {}; // stores user location
-var counter = 0;
+var genreList;
+
+
+var myFavMovieList =
+{
+    title :[],
+    imgEl :[],
+    detailEl:[]
+};
+
+var tempMovie =
+{
+    title :"",
+    imgEl :"",
+    detailEl :""
+};
 
 
 
@@ -271,8 +288,7 @@ var getRestaurantData = function()
 //output: All movie data
 var getMovieData = function() 
 {
-    var movieGenre = getMoodTypes().genre;//"Comedy"; //remove and add genre from getMoodTypes() function
-    console.log(movieGenre);
+    var movieGenre = getMoodTypes().genre;
     fetch("https://api.themoviedb.org/3/genre/movie/list?api_key="+ TMDB_API_KEY +"&language=en-US")
     .then(function(response)
     {
@@ -281,12 +297,18 @@ var getMovieData = function()
     .then(function(data)
     {
         var genres = data.genres;
+        var pageNo = Math.floor(Math.random() * (100));
         for(var i =0; i<genres.length; i++)
         {
             if (genres[i].name === movieGenre)
             {
                 return fetch("https://api.themoviedb.org/3/discover/movie?api_key="+ TMDB_API_KEY +
-                             "&with_genres="+genres[i].id+"&with_original_language=en&include_adult=exclude&sort_by=popularity.desc&release_date.gte=1990");
+                             "&with_genres="+ genres[i].id +
+                             "&with_original_language=en" +
+                             "&include_adult=exclude" +
+                             "&sort_by=popularity.desc" +
+                             "&page=" + pageNo +
+                             "&primary_release_date.gte=1990");
             }
         }
     })
@@ -296,21 +318,28 @@ var getMovieData = function()
     })
     .then(function(data)
     {
-        var movie = data.results[counter];
+        var x = Math.floor(Math.random() * (data.results.length));
+        var movie = data.results[x];
         var imageEl = document.createElement("img");
         var imgURL =  movie.poster_path || movie.backdrop_path;
         imageEl.src = "https://image.tmdb.org/t/p/original" + imgURL;
+
+
         var titleEl = document.createElement("span");
-        titleEl.textContent =movie.title;
         titleEl.className = "card-title";
+        titleEl.textContent =movie.title;
+
         var voteEl = document.createElement("p");
         voteEl.textContent ="Rating: " + movie.vote_average + "/10";
 
         var genreEl = document.createElement("p");
-        genreEl.textContent ="Genre: " + movieGenre;
+        genreEl.id = "movie-genre"
+        genreEl.textContent ="Genre:";
+        genreList = movie.genre_ids;
 
         var releaseDateEl = document.createElement("p");
         releaseDateEl.textContent ="Release Date: " + movie.release_date;     
+        
         var overviewEl = document.createElement("p");
         overviewEl.textContent ="Overview: " + movie.overview;
 
@@ -320,14 +349,48 @@ var getMovieData = function()
 
         var movieDetailsEl = document.createElement("div");
         movieDetailsEl.className = "card-content";
+
         movieDetailsEl.appendChild(titleEl);
         movieDetailsEl.appendChild(releaseDateEl);
-        movieDetailsEl.appendChild(voteEl);
         movieDetailsEl.appendChild(genreEl);
+        movieDetailsEl.appendChild(voteEl);
         movieDetailsEl.appendChild(overviewEl);
 
         movieMapContainerEl.appendChild(movieImgEl);
         movieMapContainerEl.appendChild(movieDetailsEl);
+
+        tempMovie.imgEl = movieImgEl;
+        tempMovie.detailEl = movieDetailsEl;
+        tempMovie.title = movie.title;
+
+        return fetch("https://api.themoviedb.org/3/genre/movie/list?api_key="+ TMDB_API_KEY +"&language=en-US");
+    })
+    .then(function(response)
+    {
+        return response.json()
+    })
+    .then(function(data)
+    {
+        var movieGenreNames = "";
+        console.log(genreList);
+        var allGenres = data.genres;
+        for(var i =0; i<genreList.length; i++)
+        {
+            for(var j =0; j<allGenres.length; j++)
+            {
+                if (genreList[i] === allGenres[j].id)
+                {
+                    console.log(allGenres[j].name);
+                    movieGenreNames += " " + allGenres[j].name+",";
+                    break;
+                }
+
+            }
+        }
+
+        var genreEl= document.querySelector("#movie-genre")
+        genreEl.textContent += movieGenreNames;
+
     });
 }
 
@@ -407,20 +470,50 @@ var displayResults = function()
 // show next movie and resturant
 var nextBtnHandler = function()
 {
-    counter++;
     movieMapContainerEl.innerHTML ="";
-    // getMovieData();
+    getMovieData();
+    getRestaurantData();
 }
 
 //save list
 var addToList = function()
 {
+    myFavMovieList.title.push(tempMovie.title);
+    myFavMovieList.imgEl.push(tempMovie.imgEl);
+    myFavMovieList.detailEl.push(tempMovie.detailEl);
+
+    console.log(myFavMovieList);
+    localStorage.setItem("myFavMovieList", JSON.stringify(myFavMovieList));
     
 }
 
 //load list
 var loadList = function()
 {
+    myFavMovieList = localStorage.getItem("myFavMovieList");
+    myFavMovieList = JSON.parse(myFavMovieList); 
+    
+    if (myFavMovieList)
+    {
+        favListEl.innerHTML = "";
+        for(var i =0; i <myFavMovieList.title.length;i++)
+        {
+            var favEl = document.createElement("li");
+            favEl.className = "collection-item";
+    
+            var movieEl = document.createElement("p");
+            movieEl.textContent = myFavMovieList.title[i];
+            console.log(movieEl.textContent,myFavMovieList.title[i]);
+        
+            favEl.appendChild(movieEl);
+    
+            favListEl.appendChild(favEl);
+        }
+    }
+    else
+    {
+        myFavMovieList = [];
+    }
     
 }
 
@@ -434,13 +527,6 @@ var initializePageView = function() {
 
 //open Modal
 
-// document.addEventListener('DOMContentLoaded', function() 
-// {
-//     var elems = document.querySelectorAll('.modal');
-//   //  var instances = M.Modal.init(elems, options);
-//     // instances.open();
-// });
-// // Or with jQuery
 $(document).ready(function()
 {
     $('.modal').modal(); // initialize modal
@@ -450,10 +536,21 @@ $(document).ready(function()
     loadingModalInstance.open();
 }); 
 
-// displayResults();
+$('#fav-list-nav').click(function(event) 
+{
+    event.preventDefault();
+    loadList();
+    $('.modal').modal(); // initialize modal
+    lovelistModalInstance = M.Modal.getInstance($('#lovelistmodal')); 
+    lovelistModalInstance.options.dismissible = false;
+    lovelistModalInstance.open();
+
+});
+
+
 initializePageView();
 
-// getMovieData();
+
 nextBtnEl.addEventListener("click", nextBtnHandler);
 saveBtnEl.addEventListener("click", addToList);
 

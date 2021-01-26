@@ -23,7 +23,7 @@
                 <img class="brand-logo" src="assets/images/logo-horizontal.png" alt="date concierge logo">
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li class="waves-effect waves-light btn-large nav-button-background">Change the Mood</li>
-                    <li class="waves-effect waves-light btn-large nav-button-background" href="#lovelistmodal">My ♥ List</li>
+                    <li class="waves-effect waves-light btn-large nav-button-background" id="fav-list-nav"  href="#lovelistmodal">My ♥ List</li>
                 </ul>
             </div>
         </nav>
@@ -70,7 +70,9 @@
             <div class="modal-content">
                 <h4>My ♥ list</h4>
                 <p>Here's your list of winning date ideas.</p>
-                <div class="love-list-info"></div>
+                <div class="love-list-info">
+                    <ul id="fav-list" class="collection"></ul>
+                </div>
             </div>
             <div class="modal-footer">
                 <a href="#!" class="modal-close waves-effect waves-green btn-flat">Back to results</a>

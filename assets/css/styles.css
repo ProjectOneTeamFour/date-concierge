@@ -150,3 +150,23 @@ main#landing-page {
 #movie-or-map-container {
     max-width: 450px;
 }
+.card-image{
+    height: 400px; /* Your height here */
+    overflow: hidden;
+}
+
+.card-image img{
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle
+}
+
+.card-content{
+    height: 200px; /* Your height here */
+    overflow: hidden;
+
+}
+
+#movie-or-map-container .card-content{
+    overflow-y: scroll;
+}

@@ -7,6 +7,7 @@ var favListEl = document.querySelector("#fav-list");
 
 var temperature = "";
 var loadingModalInstance;
+var messageModalInstance;
 
 //API Keys
 const ZOMATO_API_KEY = "670c5f2e4824fb60c96ab79528421baf";
@@ -303,11 +304,12 @@ var getRestaurantData = function()
             generateRestaurantCard(restaurant);
           });
         } else {
-            alert("Error: " + response.statusText);
+            showMessage("Error: " + response.statusText, true);
         }
     })
     .catch(function(error) {
-            alert("Unable to get data");
+        loadingModalInstance.close();
+        showMessage("Unable to get data", true);
     });
     
 };
@@ -453,7 +455,7 @@ var displayResults = function()
                 } 
                 else 
                 {
-                    alert("Error:" + response.statusText); // TO-DO: need to convert this to a modal
+                    showMessage("Error:" + response.statusText, true);
                 }
             })
             .then(function(data) 
@@ -477,31 +479,12 @@ var displayResults = function()
 
                 //NOT SURE IF THIS IS WHERE IT SHOULD GO<< BUT PLACING HERE FOR NOW (CURTIS)
                 getRestaurantData();
-
-
-                // return getWeatherData();
             })
-            // .then(function(response) 
-            // {
-            //     if(response.ok)
-            //     {
-            //         return response.json();
-            //     } 
-            //     else 
-            //     {
-            //         alert("Error:" + response.statusText); // TO-DO: need to convert this to a modal
-            //     }
-            // })
-            // .then(function(data) 
-            // {
-            //     if(!data)
-            //     {
-            //         return;
-            //     }
-            //     console.log("Weather Data", data);
-            //     document.location.replace("./dateresults.html"+"?username="+userName+"&date="+date+"&mood="+mood);
-            // })
-            .catch(error => console.log(error));
+            .catch(function(error)
+            {
+                loadingModalInstance.close();
+                showMessage("Could not complete operation", true);
+            });
     }       
 }
 
@@ -531,6 +514,7 @@ var addToList = function()
     console.log(myFavList);
 
     saveFavlist();
+    showMessage("Your choice has been added to the ♥ List!");
     
 }
 
@@ -680,11 +664,31 @@ var initializePageView = function()
     }
 }
 
+var showMessage = function(msg, err = false) 
+{
+    $("#message") // populate message container with msg
+        .empty()
+        .text(msg);
+    
+    messageModalInstance.open(); // display message modal
+    setTimeout(function(){
+        messageModalInstance.close(); // close message modal
+        if (err) {
+            document.location.replace("./index.html");
+        }
+    }, 2000); 
+}
+
 //open Modal
 
 $(document).ready(function()
 {
     $('.modal').modal(); // initialize modal
+    
+    // Get an instance of message modal
+    messageModalInstance = M.Modal.getInstance($('#messageModal'));
+    messageModalInstance.options.dismissible = false;
+    
     // open loading modal with spinner
     loadingModalInstance = M.Modal.getInstance($('#loadingModal')); 
     loadingModalInstance.options.dismissible = false;
@@ -700,6 +704,13 @@ $('#fav-list-nav').click(function(event)
     lovelistModalInstance.options.dismissible = true;
     lovelistModalInstance.open();
 
+});
+
+// Change input link click event handler
+$('#change-input').click(function(event) 
+{
+    event.preventDefault();
+    document.location.replace("./index.html"); 
 });
 
 

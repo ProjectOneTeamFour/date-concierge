@@ -25,19 +25,32 @@ var mood = params.get('mood');
 var userLocation = {}; // stores user location
 var genreList;
 
+var myFavList = [];
 
-var myFavMovieList =
+var fav =
 {
-    title :[],
-    imgEl :[],
-    detailEl:[]
-};
+    mood:"",
+    restaurant:
+    {
+        img:"",
+        name:"",
+        inOrOut:"",
+        address:"",
+        cuisine:"",
+        costForTwo:"",
+        hours:""
+    }, 
 
-var tempMovie =
-{
-    title :"",
-    imgEl :"",
-    detailEl :""
+    movie:
+    {
+        title :"",
+        rate:"",
+        genre:"",
+        releaseDate:"",
+        overview:"",
+        img:""
+    }
+
 };
 
 
@@ -107,19 +120,32 @@ var generateRestaurantCard = function(restaurant) {
         var imageEl = document.createElement("img");
         imageEl.src = restaurant[x].restImg;
         imageEl.setAttribute("id", "restImg");
+
         var restNameEl = document.createElement("span");
         restNameEl.textContent =restaurant[x].restName;
+        restNameEl.setAttribute("id", "restName");
         restNameEl.className = "card-title";
+
         var inOrOutEl = document.createElement("p");
+        inOrOutEl.setAttribute("id", "restInOrOut");
         inOrOutEl.textContent =inOrOut;
+
         var addressEl = document.createElement("p");
+        addressEl.setAttribute("id", "restAddress");
         addressEl.textContent =restaurant[x].address;
+
         var cuisineEl = document.createElement("p");
+        cuisineEl.setAttribute("id", "restCuisine");
         cuisineEl.textContent =restaurant[x].cuisine;
+
         var costForTwoEl = document.createElement("p");
+        costForTwoEl.setAttribute("id", "restCostForTwo");
         costForTwoEl.textContent ="Average cost for 2: $" + restaurant[x].costForTwo;
+
         var hoursEl = document.createElement("p");
+        hoursEl.setAttribute("id", "restHours");
         hoursEl.textContent =restaurant[x].timings;
+
         var restImgEl = document.createElement("div");
         restImgEl.className= "card-image";
         restImgEl.appendChild(imageEl);
@@ -133,6 +159,14 @@ var generateRestaurantCard = function(restaurant) {
         restDetailsEl.appendChild(costForTwoEl);
         restDetailsEl.appendChild(hoursEl);
 
+        fav.restaurant.img  = restaurant[x].restImg;  
+        fav.restaurant.name = restaurant[x].restName;
+        fav.restaurant.inOrOut = inOrOut;
+        fav.restaurant.address = restaurant[x].address;
+        fav.restaurant.cuisine =restaurant[x].cuisine;
+        fav.restaurant.costForTwo ="Average cost for 2: $" + restaurant[x].costForTwo;
+        fav.restaurant.hours =restaurant[x].timings;
+
         restaurantContainerEl.appendChild(restImgEl);
         restaurantContainerEl.appendChild(restDetailsEl);
         $("#restImg").css({
@@ -145,14 +179,14 @@ var generateRestaurantCard = function(restaurant) {
     
 }
 
-//get types of resturants and movies based on the mood
+//get types of restaurants and movies based on the mood
 //input : user mood
 //output: movie category , food type
 var getMoodTypes = function() 
 {
     var adventurous = 
     {
-        genres : ["Action","Adventure","Crime","Documentary","History","Horro","Mystery","Science Fiction","Thriller","War","Western","Drama","Fantasy"],
+        genres : ["Action","Adventure","Crime","Documentary","History","Horror","Mystery","Science Fiction","Thriller","War","Western","Drama","Fantasy"],
         cuisines : [
                     "Afghan-1035","Afghani-6","African-152","Arabian-4","Argentine-151","Armenian-175","Australian-131","Austrian-201",
                     "Bangladeshi-145","Brazilian-159","British-133","Bubble Tea-247","Burmese-22","Cajun-491","California-956","Cambodian-111",
@@ -223,9 +257,9 @@ var getMoodTypes = function()
 }
 
 
-//get resturants data
+//get restaurants data
 //input : coordinates, food type
-//output: All resturant data
+//output: All restaurant data
 var getRestaurantData = function() 
 {
     var restaurant = [{restName:"", cuisine:"", address:"", restImg:"", costForTwo:"", restHours:""}];
@@ -235,12 +269,9 @@ var getRestaurantData = function()
     var cuisineID = cuisine.split("-");
     var searchRadius = 2500;
     
-    console.log(cuisine);
-    console.log(cuisineID);
     var url = `https://developers.zomato.com/api/v2.1/search?entity_type=metro&lat=${lat}&lon=${lng}&radius=${searchRadius}&cuisines=${cuisineID}&sort=rating`;
     //https://developers.zomato.com/api/v2.1/search?entity_type=metro&lat=43.7080973&lon=-79.395311499&radius=2500&cuisines=142&sort=rating
     //var urlcuisines = "https://developers.zomato.com/api/v2.1/cuisines?city_id=89"
-    console.log(url);
     var config = 
     {
         headers: 
@@ -252,7 +283,6 @@ var getRestaurantData = function()
         // request was successful
         if (response.ok) {
           response.json().then(function(data) {
-            console.log(data);
             //displayCuisine(data);
 
             for(var i =0; i < data.restaurants.length; i++){
@@ -270,7 +300,6 @@ var getRestaurantData = function()
                 
            //console.log(data.cuisines[i].cuisine.cuisine_name,"-"+data.cuisines[i].cuisine.cuisine_id);
             };
-            console.log(restaurant);
             generateRestaurantCard(restaurant);
           });
         } else {
@@ -297,7 +326,7 @@ var getMovieData = function()
     .then(function(data)
     {
         var genres = data.genres;
-        var pageNo = Math.floor(Math.random() * (100));
+        var pageNo = Math.floor(Math.random() * (50))+1;
         for(var i =0; i<genres.length; i++)
         {
             if (genres[i].name === movieGenre)
@@ -320,30 +349,38 @@ var getMovieData = function()
     {
         var x = Math.floor(Math.random() * (data.results.length));
         var movie = data.results[x];
+
         var imageEl = document.createElement("img");
+        imageEl.id = "movie-img";
         var imgURL =  movie.poster_path || movie.backdrop_path;
-        imageEl.src = "https://image.tmdb.org/t/p/original" + imgURL;
+        console.log(imgURL,movie.poster_path,movie.backdrop_path);
+        imageEl.src = "https://image.tmdb.org/t/p/w200" + imgURL;
 
 
         var titleEl = document.createElement("span");
-        titleEl.className = "card-title";
+        titleEl.id = "movie-title";
+        titleEl.classList = "card-title";
         titleEl.textContent =movie.title;
 
         var voteEl = document.createElement("p");
+        voteEl.id = "movie-vote";
         voteEl.textContent ="Rating: " + movie.vote_average + "/10";
 
         var genreEl = document.createElement("p");
-        genreEl.id = "movie-genre"
+        genreEl.id = "movie-genre";
         genreEl.textContent ="Genre:";
         genreList = movie.genre_ids;
 
         var releaseDateEl = document.createElement("p");
+        releaseDateEl.id = "movie-releaseDate"
         releaseDateEl.textContent ="Release Date: " + movie.release_date;     
         
         var overviewEl = document.createElement("p");
-        overviewEl.textContent ="Overview: " + movie.overview;
+        overviewEl.id = "movie-overview";
+        overviewEl.textContent ="Overview: " +movie.overview;
 
         var movieImgEl = document.createElement("div");
+
         movieImgEl.className= "card-image";
         movieImgEl.appendChild(imageEl);
 
@@ -359,9 +396,11 @@ var getMovieData = function()
         movieMapContainerEl.appendChild(movieImgEl);
         movieMapContainerEl.appendChild(movieDetailsEl);
 
-        tempMovie.imgEl = movieImgEl;
-        tempMovie.detailEl = movieDetailsEl;
-        tempMovie.title = movie.title;
+        fav.movie.title = movie.title;
+        fav.movie.rate = "Rating: " + movie.vote_average + "/10";
+        fav.movie.releaseDate = "Release Date: " + movie.release_date; 
+        fav.movie.overview ="Overview: " +movie.overview;
+        fav.movie.img ="https://image.tmdb.org/t/p/w200" + imgURL;
 
         return fetch("https://api.themoviedb.org/3/genre/movie/list?api_key="+ TMDB_API_KEY +"&language=en-US");
     })
@@ -372,7 +411,6 @@ var getMovieData = function()
     .then(function(data)
     {
         var movieGenreNames = "";
-        console.log(genreList);
         var allGenres = data.genres;
         for(var i =0; i<genreList.length; i++)
         {
@@ -380,7 +418,6 @@ var getMovieData = function()
             {
                 if (genreList[i] === allGenres[j].id)
                 {
-                    console.log(allGenres[j].name);
                     movieGenreNames += " " + allGenres[j].name+",";
                     break;
                 }
@@ -390,6 +427,7 @@ var getMovieData = function()
 
         var genreEl= document.querySelector("#movie-genre")
         genreEl.textContent += movieGenreNames;
+        fav.movie.genre = genreEl.textContent;
 
     });
 }
@@ -436,7 +474,7 @@ var displayResults = function()
                     }
                 });
                 loadingModalInstance.close();
-                console.log("Weather Data", data);
+
                 //NOT SURE IF THIS IS WHERE IT SHOULD GO<< BUT PLACING HERE FOR NOW (CURTIS)
                 getRestaurantData();
 
@@ -467,10 +505,17 @@ var displayResults = function()
     }       
 }
 
-// show next movie and resturant
+// show next movie and restaurant
 var nextBtnHandler = function()
 {
     movieMapContainerEl.innerHTML ="";
+    var headerEl = document.querySelector(".main-section-copy");
+    headerEl.style.display ="block";
+    var weatherEl = document.querySelector("#weather-container");
+    weatherEl.style.display ="block";
+
+    var historyEl = document.querySelector("#history");
+    historyEl .style.display ="none";
     getMovieData();
     getRestaurantData();
 }
@@ -478,47 +523,157 @@ var nextBtnHandler = function()
 //save list
 var addToList = function()
 {
-    myFavMovieList.title.push(tempMovie.title);
-    myFavMovieList.imgEl.push(tempMovie.imgEl);
-    myFavMovieList.detailEl.push(tempMovie.detailEl);
 
-    console.log(myFavMovieList);
-    localStorage.setItem("myFavMovieList", JSON.stringify(myFavMovieList));
+    loadFavList();
+    fav.mood = mood;
+    console.log(myFavList,fav);
+    myFavList.unshift(fav);
+    console.log(myFavList);
+
+    saveFavlist();
     
 }
 
-//load list
-var loadList = function()
+
+var showFavList = function()
 {
-    myFavMovieList = localStorage.getItem("myFavMovieList");
-    myFavMovieList = JSON.parse(myFavMovieList); 
+    loadFavList();
     
-    if (myFavMovieList)
+    if (myFavList)
     {
         favListEl.innerHTML = "";
-        for(var i =0; i <myFavMovieList.title.length;i++)
+        for(var i =0; i <myFavList.length;i++)
         {
+
+            var moodEl = document.createElement("p");
+            moodEl.textContent = myFavList[i].mood[0].toUpperCase() + myFavList[i].mood.slice(1,mood.length) + " Date" //change mood from localstorage
+
+            var dinnerEl = document.createElement("p");
+            dinnerEl.textContent = "Dinner: " + myFavList[i].restaurant.name;
+            // console.log(movieEl.textContent,myFavList.title[i]);
+
+            var movieEl = document.createElement("p");
+            movieEl.textContent = "Movies: " +  myFavList[i].movie.title;
+            // console.log(movieEl.textContent,myFavList.title[i]);
+
+            var seeDetailsBtnEl = document.createElement("button");
+            seeDetailsBtnEl.setAttribute("fav-date-id", i);
+            seeDetailsBtnEl.name = "seeDetailsBtn";
+            seeDetailsBtnEl.textContent = "See the details";
+
+            var deleteBtnEl = document.createElement("button");
+            deleteBtnEl.setAttribute("fav-date-id", i);
+            deleteBtnEl.name = "deleteBtn";
+            deleteBtnEl.textContent = "Delete";
+        
             var favEl = document.createElement("li");
             favEl.className = "collection-item";
-    
-            var movieEl = document.createElement("p");
-            movieEl.textContent = myFavMovieList.title[i];
-            console.log(movieEl.textContent,myFavMovieList.title[i]);
-        
+            favEl.appendChild(moodEl);
+            favEl.appendChild(dinnerEl);
             favEl.appendChild(movieEl);
+            favEl.appendChild(seeDetailsBtnEl);
+            favEl.appendChild(deleteBtnEl);
     
             favListEl.appendChild(favEl);
         }
     }
     else
     {
-        myFavMovieList = [];
+        favListEl.innerHTML = "You do not have any saved dates yet.";
     }
     
 }
 
+var favListBtnHandler = function(event)
+{
+    var target = event.target;
+    if(target.matches("[name='seeDetailsBtn']"))
+    {
+        var id =target.getAttribute('fav-date-id');
+
+        //restaurants
+        var restImageEl = document.querySelector("#restImg");
+        restImageEl.src = myFavList[id].restaurant.img;
+        var restNameEl = document.querySelector("#restName");
+        restNameEl.textContent = myFavList[id].restaurant.name;
+        var inOrOutEl = document.querySelector("#restInOrOut");
+        inOrOutEl.textContent =  myFavList[id].restaurant.inOrOut;
+        var addressEl = document.querySelector("#restAddress");
+        addressEl.textContent = myFavList[id].restaurant.address;
+        var cuisineEl = document.querySelector("#restCuisine");
+        cuisineEl.textContent = myFavList[id].restaurant.cuisine;
+        var costForTwoEl = document.querySelector("#restCostForTwo");
+        costForTwoEl.textContent =myFavList[id].restaurant.costForTwo ;
+        var hoursEl = document.querySelector("#restHours");
+        hoursEl.textContent = myFavList[id].restaurant.hours;
+
+        //movies
+        
+        var movieImageEl = document.querySelector("#movie-img");
+        movieImageEl.src = myFavList[id].movie.img;
+        var titleEl = document.querySelector("#movie-title");
+        titleEl.textContent = myFavList[id].movie.title
+        var voteEl = document.querySelector("#movie-vote");
+        voteEl.textContent =myFavList[id].movie.rate ;
+        var genreEl= document.querySelector("#movie-genre")
+        genreEl.textContent =myFavList[id].movie.genre;
+        var releaseDateEl = document.querySelector("#movie-releaseDate");
+        releaseDateEl.textContent = myFavList[id].movie.releaseDate;
+        var overviewEl = document.querySelector("#movie-overview");
+        overviewEl.textContent =myFavList[id].movie.overview;
+
+        var headerEl = document.querySelector(".main-section-copy");
+        headerEl.style.display ="none";
+        var weatherEl = document.querySelector("#weather-container");
+        weatherEl.style.display ="none";
+
+        var historyEl = document.querySelector("#history");
+        historyEl .style.display ="block";
+
+        var historyContentEl = document.createElement("h2");
+        historyContentEl.textContent = "Favorite "+ myFavList[id].mood +":";
+        historyEl.appendChild(historyContentEl);
+
+        lovelistModalInstance = M.Modal.getInstance($('#lovelistmodal')); 
+        lovelistModalInstance.close();
+
+    }
+
+
+    else if(target.matches("[name='deleteBtn']"))
+    {
+        var id =target.getAttribute('fav-date-id');
+        myFavList.splice(id,1);
+        saveFavlist();
+        showFavList();
+
+        console.log("delete",id);
+    }
+
+};
+
+var loadFavList = function ()
+{
+    myFavList = localStorage.getItem("myFavList");
+    if(myFavList)
+    {
+        myFavList = JSON.parse(myFavList); 
+    }
+    else
+    {
+        myFavList = [];
+    }
+} 
+
+var saveFavlist = function()
+{
+    localStorage.setItem("myFavList", JSON.stringify(myFavList));
+}
+
 // initialize page view
-var initializePageView = function() {
+var initializePageView = function() 
+{
+    loadFavList();
     $("#user-name").text(username);
     if($.isEmptyObject(userLocation)) {
         displayResults();
@@ -539,10 +694,10 @@ $(document).ready(function()
 $('#fav-list-nav').click(function(event) 
 {
     event.preventDefault();
-    loadList();
+    showFavList();
     $('.modal').modal(); // initialize modal
     lovelistModalInstance = M.Modal.getInstance($('#lovelistmodal')); 
-    lovelistModalInstance.options.dismissible = false;
+    lovelistModalInstance.options.dismissible = true;
     lovelistModalInstance.open();
 
 });
@@ -553,5 +708,4 @@ initializePageView();
 
 nextBtnEl.addEventListener("click", nextBtnHandler);
 saveBtnEl.addEventListener("click", addToList);
-
-
+favListEl.addEventListener('click',favListBtnHandler);

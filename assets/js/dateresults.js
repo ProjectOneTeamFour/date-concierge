@@ -368,7 +368,9 @@ var getRestaurantData = function()
         }
     })
     .catch(function(error) {
-        loadingModalInstance.close();
+        if(loadingModalInstance){
+            loadingModalInstance.close();
+        }
         showMessage("Unable to get data", true);
     });
     
@@ -614,11 +616,13 @@ var showFavList = function()
             seeDetailsBtnEl.setAttribute("fav-date-id", i);
             seeDetailsBtnEl.name = "seeDetailsBtn";
             seeDetailsBtnEl.textContent = "See the details";
+            seeDetailsBtnEl.classList.add("waves-effect", "waves-light", "btn", "nav-button-background", "m-2px-lr");
 
             var deleteBtnEl = document.createElement("button");
             deleteBtnEl.setAttribute("fav-date-id", i);
             deleteBtnEl.name = "deleteBtn";
             deleteBtnEl.textContent = "Delete";
+            deleteBtnEl.classList.add("waves-effect", "waves-light", "btn", "nav-button-background", "m-2px-lr");
         
             var favEl = document.createElement("li");
             favEl.className = "collection-item";

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+
+    <title>Date Concierge</title>
+</head>
+<body class="grey-background">
+    <main class="valign-wrapper" id="landing-page">
+        <div class="row">
+            <div class="col s12">
+              <div class="card" id="main-page-card">
+                    <div class="card-image main-background">
+                        <img src="assets/images/logo - stacked.png" width="227px">
+                      </div>
+                    <div class="card-content">
+                        <p>Dating sucks. Especially right now. Let us take the planning off of your hands.</p>
+                    </div>
+                    <div class="card-action">
+                        <form id="submit-form">
+                            <div class="input-field">
+                                <input placeholder="Your name" id="user-name" name="user-name" type="text" class="validate" />
+                            </div>
+                            <input type="text" id="date" name="date" class="datepicker" placeholder="When's the big day" id="" autocomplete="off" />
+                            <div class="input-field" id="date-mood" name="date-mood">
+                                <select id="mood">
+                                    <option value="" disabled selected>What mood are you trying to set?</option>
+                                    <option value="spontaneous">Spontaneous</option>
+                                    <option value="romantic">Romantic</option>
+                                    <option value="adventurous">Adventurous</option>
+                                    <option value="relaxed">Relaxed</option>
+                                </select>
+                            </div>
+                            <div class="center-align">
+                                <button class="btn nav-button-background" id="generate-date" type="submit">Get Date Ideas</button>
+                            </div>
+                        </form>
+                    </div>
+              </div>
+            </div>
+          </div>
+    </main>
+
+    <!-- sources for jquery, jqueryui, touch punch and momentjs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <!-- custom scripts -->
+    <script src="./assets/js/homepage.js"></script>
+</body>
+</html>

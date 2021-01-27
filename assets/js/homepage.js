@@ -34,7 +34,7 @@ nextWeek.setDate(nextWeek.getDate() + 7);
 // Initialize datepicker
 $("#date").datepicker(
 {
-    format: "dd-mm-yyyy",
+    format: "mm-dd-yyyy",
     minDate : today,
     maxDate : nextWeek,
     // autoclose: true
@@ -48,6 +48,3 @@ $("#date").datepicker(
 $('select').formSelect();
 
 submitFromEl.addEventListener("submit", changePage);
-
-
-

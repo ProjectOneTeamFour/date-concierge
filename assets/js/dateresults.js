@@ -4,12 +4,17 @@ var saveBtnEl = document.querySelector("#save-btn");
 var movieMapContainerEl = document.querySelector("#movie-or-map-container");
 var restaurantContainerEl = document.querySelector("#restaurant-info");
 var favListEl = document.querySelector("#fav-list");
+var menuHeader = document.querySelector("#menu-header");
+var menuIntroText = document.querySelector("#menu-text");
+var movieHeader = document.querySelector("#movie-header");
+var movieIntroText = document.querySelector("#movie-text");
+var introText = document.querySelector("#intro-paragraph");
 
 var loadingModalInstance;
 var messageModalInstance;
 
 //API Keys
-const ZOMATO_API_KEY = "670c5f2e4824fb60c96ab79528421baf";
+const ZOMATO_API_KEY = "4f647c578e863a28146038bc9b68f278";
 const OWM_API_KEY = "ce455bd02a51e6ea3ab658a42367d8f2";
 const TMDB_API_KEY = "5733f541d83befd903f222e59340f8b2";
 
@@ -71,7 +76,12 @@ var getLocation = function()
 
 // helper function to format unix timestamp
 let getDateFromTimeStamp = function(timeStamp, timezoneOffset) {
-    return moment.unix(timeStamp + timezoneOffset).utc().format("DD-MM-YYYY");
+    return moment.unix(timeStamp + timezoneOffset).utc().format("MM-DD-YYYY");
+}
+
+// helper function to capitalize first letter
+var capitalizeFirstLetter = function(txt) {
+    return txt.charAt(0).toUpperCase() + txt.slice(1)
 }
 
 //get weather data
@@ -83,14 +93,22 @@ var getWeatherData = function()
     return fetch(urlForecast);
 }
 
+var generateIntroText = function () {
+    if (inOrOut === "DINE OUT") {
+        introText.textContent ="Grab your stuff, get all dressed up. Why? Because, we're hitting the town. Based on the weather in your city, we think it'd be a great night for you and your date to venture out in your city. Head to the restaurant. Then try a romantic walk around a near by park, see what movies are playing at a theatre near you. We've got you off to a great start. Where the rest of the night takes you... well, that's up to you!"
+       } else {
+        introText.textContent ="Ready to hunker down for the night? Based on the upcoming forecast, we think your date night would be best spent ordering in. Once you're done with dinner, get cuddly on the couch. Where the night takes you from there... well, that's up to you!"
+       }
+}
+
 var generateWeatherCard = function(temperature, weatherDescription, weatherIcon) { 
     var cardEl = $("<div>")
         .addClass("card")
         .attr("id", "weather-card")
         .html(`
-            <div class="card-content">
-                <span class="card-title">Selected Date: ${date} </span>
-                <p> ${weatherDescription}, with a chance of love ♥</p>
+            <div class="card-panel">
+                <h4>The forecast for ${date} </h4>
+                <p> ${capitalizeFirstLetter(weatherDescription)}, with a chance of romance.</p>
                 <div id="current-weather">
                     <div class="row">
                         <div class="col s5">
@@ -114,14 +132,17 @@ var generateWeatherCard = function(temperature, weatherDescription, weatherIcon)
 var generateMapCard = function(restLat, restLng) { 
     var lat = userLocation.latitude;
     var lng = userLocation.longitude;
+
+    movieHeader.innerText = "Here's where you're heading"
+    movieIntroText.innerText = "We wouldn't want you to get lost. Here are directions to the restaurant."
     var cardEl = $("<div>")
         //.addClass("card-content")
         .attr("id", "Map-Card")
         .html(`
-            <div class="card-content">
+            <div class="card-panel">
             <iframe src="https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d11535.357946040902!2dv${restLng}!3d${restLat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1
             !4m11!3e6!4m4!2s${lat}%2C%20${lng}!3m2!1d${lat}!2d${lng}!4m4!2s${restLat}%2C$${restLng}!3m2!1d${restLat}!2d${restLng}!5e0!3m2!1sen!2sca!4v1611684305916
-            !5m2!1sen!2sca" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+            !5m2!1sen!2sca" width="400px" height="520px" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
         `);
     
     $("#movie-or-map-container")
@@ -131,6 +152,14 @@ var generateMapCard = function(restLat, restLng) {
 
 var generateRestaurantCard = function(restaurant) { 
     restaurantContainerEl.innerHTML = '';
+
+     //hayley add
+    if (inOrOut === "DINE OUT") {
+     menuIntroText.textContent ="Let's hit the town. Grab your phone, make a reservation and we're off."
+    } else {
+        menuIntroText.textContent ="Let's stay in. Get Cozy, and grab your phone. We're ordering takeout."
+    }
+    //end of add
     
     var x = Math.floor(Math.random() * (restaurant.length));
     if (restaurant[x].restImg) {
@@ -288,7 +317,7 @@ var getRestaurantData = function()
     var lng = userLocation.longitude;
     var cuisine = getMoodTypes().cuisine;
     var cuisineID = cuisine.split("-");
-    var searchRadius = 2500;
+    var searchRadius = 500000;
     
     var url = `https://developers.zomato.com/api/v2.1/search?entity_type=metro&lat=${lat}&lon=${lng}&radius=${searchRadius}&cuisines=${cuisineID}&sort=rating`;
     //https://developers.zomato.com/api/v2.1/search?entity_type=metro&lat=43.7080973&lon=-79.395311499&radius=2500&cuisines=142&sort=rating
@@ -375,6 +404,9 @@ var getMovieData = function()
         })
         .then(function(data)
         {
+            movieHeader.innerText = "Now playing"
+            movieIntroText.innerText = "Grab the popcorn. Hit the couch. And snuggle in for this great flick."
+
             var x = Math.floor(Math.random() * (data.results.length));
             var movie = data.results[x];
 
@@ -482,7 +514,7 @@ var displayResults = function()
                 } 
                 else 
                 {
-                    showMessage("Error:" + response.statusText, true);
+                    showMessage("Error: " + response.statusText, true);
                 }
             })
             .then(function(data) 
@@ -506,6 +538,9 @@ var displayResults = function()
 
                 //NOT SURE IF THIS IS WHERE IT SHOULD GO<< BUT PLACING HERE FOR NOW (CURTIS)
                 getRestaurantData();
+
+                //not sure if this is where it should go, but here it is for now.
+                generateIntroText();
             })
             .catch(function(error)
             {
@@ -541,7 +576,7 @@ var addToList = function()
     console.log(myFavList);
 
     saveFavlist();
-    showMessage("Your choice has been added to the ♥ List!");
+    showMessage("Woo hoo! We've added this date night suggestion to your ♥ List!");
     
 }
 
@@ -556,7 +591,7 @@ var showFavList = function()
         for(var i =0; i <myFavList.length;i++)
         {
 
-            var moodEl = document.createElement("p");
+            var moodEl = document.createElement("h5");
             moodEl.textContent = myFavList[i].mood[0].toUpperCase() + myFavList[i].mood.slice(1,mood.length) + " Date" //change mood from localstorage
 
             var dinnerEl = document.createElement("p");
@@ -693,9 +728,15 @@ var initializePageView = function()
 
 var showMessage = function(msg, err = false) 
 {
-    $("#message") // populate message container with msg
+    // populate message container with msg
+    $("#message") 
         .empty()
         .text(msg);
+    
+    // update color class
+    $("#messageModal")
+        .removeClass("teal deep-orange")
+        .addClass(err ? "deep-orange" : "teal");
     
     messageModalInstance.open(); // display message modal
     setTimeout(function(){

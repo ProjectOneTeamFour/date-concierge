@@ -184,3 +184,7 @@ main#landing-page {
 #movie-or-map-container .card-content{
     overflow-y: scroll;
 }
+
+.m-2px-lr {
+    margin: 0 2px;
+}

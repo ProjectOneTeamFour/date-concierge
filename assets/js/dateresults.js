@@ -30,7 +30,7 @@ var mood = params.get('mood');
 var userLocation = {}; // stores user location
 var genreList;
 var temperature = "";
-var controlTemp = -20;
+var controlTemp = 10;
 var inOrOut = "DINE OUT";
 
 var myFavList = [];
@@ -46,7 +46,8 @@ var fav =
         address:"",
         cuisine:"",
         costForTwo:"",
-        hours:""
+        hours:"",
+        phone:""
     }, 
 
     movie:
@@ -190,7 +191,11 @@ var generateRestaurantCard = function(restaurant) {
 
         var hoursEl = document.createElement("p");
         hoursEl.setAttribute("id", "restHours");
-        hoursEl.textContent =restaurant[x].timings;
+        hoursEl.textContent =restaurant[x].restHours;
+
+        var phoneEl = document.createElement("p");
+        phoneEl.setAttribute("id", "restHours");
+        phoneEl.textContent =restaurant[x].phone;
 
         var restImgEl = document.createElement("div");
         restImgEl.className= "card-image";
@@ -204,6 +209,7 @@ var generateRestaurantCard = function(restaurant) {
         restDetailsEl.appendChild(cuisineEl);
         restDetailsEl.appendChild(costForTwoEl);
         restDetailsEl.appendChild(hoursEl);
+        restDetailsEl.appendChild(phoneEl);
 
         fav.restaurant.img  = restaurant[x].restImg;  
         fav.restaurant.name = restaurant[x].restName;
@@ -211,7 +217,9 @@ var generateRestaurantCard = function(restaurant) {
         fav.restaurant.address = restaurant[x].address;
         fav.restaurant.cuisine =restaurant[x].cuisine;
         fav.restaurant.costForTwo ="Average cost for 2: $" + restaurant[x].costForTwo;
-        fav.restaurant.hours =restaurant[x].timings;
+        fav.restaurant.hours =restaurant[x].restHours;
+        fav.restaurant.hours =restaurant[x].phone;
+
 
         restaurantContainerEl.appendChild(restImgEl);
         restaurantContainerEl.appendChild(restDetailsEl);

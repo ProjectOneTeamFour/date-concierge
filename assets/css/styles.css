@@ -5,6 +5,10 @@
     --white: #ffffff;
 }
 
+/* Home page height fix */
+.form-height {
+    height: 100%;
+}
 /*Background Options */
 .main-background {
     background-color: var(--pink);
@@ -21,6 +25,10 @@
 /*Font color options */
 .pink-font {
     color: var(--pink)
+}
+
+.white-font {
+    color: var(--white)
 }
 /*Button Options */
 .nav-button-background {
@@ -168,7 +176,7 @@ main#landing-page {
 }
 
 .card-content{
-    height: 200px; /* Your height here */
+   /*  height: 200px; Commented this out as it was adding unwanted space to the index.html card */
     overflow: hidden;
 
 }

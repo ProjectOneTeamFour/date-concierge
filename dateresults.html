@@ -22,7 +22,7 @@
             <div class="nav-wrapper">
                 <img class="brand-logo" src="assets/images/logo-horizontal.png" alt="date concierge logo">
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li class="waves-effect waves-light btn-large nav-button-background" id="change-input">Change Input</li>
+                    <li class="waves-effect waves-light btn-large nav-button-background" id="change-input">Change my Details</li>
                     <li class="waves-effect waves-light btn-large nav-button-background" id="fav-list-nav"  href="#lovelistmodal">My ♥ List</li>
                 </ul>
             </div>
@@ -34,8 +34,8 @@
             <div id="history"></div>
             <div class="col s8">
                 <div class="main-section-copy">
-                    <h2>Get ready. Get dressed. Here's what we've got lined up for you, <span id="user-name"></span></h2>
-                    <p>Based on the weather forecast, we think you should <span id="in-or-out"></span>.</p>
+                    <h2>Get ready. Get dressed. Here's what we've got lined up for you, <span id="user-name"></span>.</h2>
+                    <p id="intro-paragraph"></p>
                 </div>
             </div>
             <div class="col s4">
@@ -46,14 +46,14 @@
         <div class="divider"></div>
         <div class="container row">
             <div id="restaurant-container" class="col s6">
-                <h4>On the menu</h4>
-                <p>Let's <span id="takeout-dineout"></span>. Check out this great restaurant</p>
+                <h4 id="menu-header">On the menu</h4>
+                <p id="menu-text"></p>
                 <div id="restaurant-info" class="card"></div>
             </div>
             <div class="col s6">
                 <div class="secondary-activity-info"></div>
-                <h4>Movie Night</h4>
-                <p>Enjoy the movie together</p>
+                <h4 id="movie-header"></h4>
+                <p id="movie-text"></p>
                 <div id="movie-or-map-container" class="card "></div>
             </div>
         </div>
@@ -67,23 +67,26 @@
         </div>
         <!-- Love List Modal -->
         <div id="lovelistmodal" class="modal">
-            <div class="modal-content">
-                <h4>My ♥ list</h4>
-                <p>Here's your list of winning date ideas.</p>
+            <div class="modal-content main-background">
+                <h4 class="white-font">My ♥ list</h4>
+                <p class="white-font">Here's your list of winning date ideas.</p>
                 <div class="love-list-info">
                     <ul id="fav-list" class="collection"></ul>
                 </div>
             </div>
-            <div class="modal-footer">
-                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Back to results</a>
+            <div class="modal-footer main-background">
+                <a href="#!" class="modal-close waves-effect waves-light btn-large nav-button-background">Back to results</a>
+            </div>
+            <div>
+                <br>
             </div>
         </div>
         <!--End of Love List Modal-->
         <!-- Loading Modal -->
         <div id="loadingModal" class="modal">
             <div class="modal-content">
-                <h4>Preparing Date Ideas...</h4>
-                <p>Some catchy sentences (while we determine logic, call APIs and fetch relevant data).</p>
+                <h4>We're hard at work</h4>
+                <p>...but we can only do our best when we know what city you're in. Make sure to tell your browser to allow your location to be shared with us.</p>
                 <div class="center-align">
                     <div class="preloader-wrapper big active">
                         <div class="spinner-layer spinner-blue-only">
@@ -103,7 +106,7 @@
         </div>
         <!--End of Loading Modal-->
         <!-- Message Modal -->
-        <div id="messageModal" class="modal">
+        <div id="messageModal" class="modal accent-1">
             <div class="modal-content">
                 <p id="message"></p>
             </div>

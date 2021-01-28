@@ -65,9 +65,19 @@
     background-color:var(--pink);
 }
 
+.teal.accent-1 {
+    background-color: #faa9bc !important;
+}
+
+
 .btn:focus, .btn-large:focus, .btn-small:focus, .btn-floating:focus {
     background-color: #ca536f;
 }
+
+.collection .collection-item {
+    background-color: #fff2f5;
+}
+
 
 input.valid:not([type]),
 input.valid:not([type]):focus,
@@ -187,4 +197,8 @@ main#landing-page {
 
 .m-2px-lr {
     margin: 0 2px;
+}
+
+.modal-btn {
+    margin: 20px auto;
 }

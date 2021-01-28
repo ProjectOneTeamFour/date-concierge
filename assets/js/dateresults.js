@@ -30,7 +30,7 @@ var mood = params.get('mood');
 var userLocation = {}; // stores user location
 var genreList;
 var temperature = "";
-var controlTemp = 10;
+var controlTemp = 20;
 var inOrOut = "DINE OUT";
 
 var myFavList = [];
@@ -47,7 +47,9 @@ var fav =
         cuisine:"",
         costForTwo:"",
         hours:"",
-        phone:""
+        phone:"",
+        restLat:"",
+        restLng:""
     }, 
 
     movie:
@@ -218,7 +220,9 @@ var generateRestaurantCard = function(restaurant) {
         fav.restaurant.cuisine =restaurant[x].cuisine;
         fav.restaurant.costForTwo ="Average cost for 2: $" + restaurant[x].costForTwo;
         fav.restaurant.hours =restaurant[x].restHours;
-        fav.restaurant.hours =restaurant[x].phone;
+        fav.restaurant.phone =restaurant[x].phone;
+        fav.restaurant.restLat=restaurant[x].restLat;
+        fav.restaurant.restLng=restaurant[x].restLng;
 
 
         restaurantContainerEl.appendChild(restImgEl);
@@ -403,8 +407,9 @@ var getMovieData = function()
                                 "&with_original_language=en" +
                                 "&include_adult=exclude" +
                                 "&sort_by=popularity.desc" +
+                                "&vote_average.gte=6"+
                                 "&page=" + pageNo +
-                                "&primary_release_date.gte=1990");
+                                "&primary_release_date.gte=1990-01-01");
                 }
             }
         })
@@ -417,12 +422,19 @@ var getMovieData = function()
             movieHeader.innerText = "Now playing"
             movieIntroText.innerText = "Grab the popcorn. Hit the couch. And snuggle in for this great flick."
 
+
             var x = Math.floor(Math.random() * (data.results.length));
             var movie = data.results[x];
 
             var imageEl = document.createElement("img");
             imageEl.id = "movie-img";
             var imgURL =  movie.poster_path || movie.backdrop_path;
+            // while(!imgURL)
+            // {
+            //     x = Math.floor(Math.random() * (data.results.length));
+            //     movie = data.results[x];
+            //     imgURL =  movie.poster_path || movie.backdrop_path;
+            // }
             console.log(imgURL,movie.poster_path,movie.backdrop_path);
             imageEl.src = "https://image.tmdb.org/t/p/w200" + imgURL;
 
@@ -600,6 +612,10 @@ var showFavList = function()
         favListEl.innerHTML = "";
         for(var i =0; i <myFavList.length;i++)
         {
+            var favContEl = document.createElement("div");
+            favContEl.classList = "col";
+            var btnContEl = document.createElement("div");
+            btnContEl.classList = "col right modal-btn";
 
             var moodEl = document.createElement("h5");
             moodEl.textContent = myFavList[i].mood[0].toUpperCase() + myFavList[i].mood.slice(1,mood.length) + " Date" //change mood from localstorage
@@ -625,12 +641,16 @@ var showFavList = function()
             deleteBtnEl.classList.add("waves-effect", "waves-light", "btn", "nav-button-background", "m-2px-lr");
         
             var favEl = document.createElement("li");
-            favEl.className = "collection-item";
-            favEl.appendChild(moodEl);
-            favEl.appendChild(dinnerEl);
-            favEl.appendChild(movieEl);
-            favEl.appendChild(seeDetailsBtnEl);
-            favEl.appendChild(deleteBtnEl);
+            favEl.classList = "collection-item row";
+
+            favContEl.appendChild(moodEl);
+            favContEl.appendChild(dinnerEl);
+            favContEl.appendChild(movieEl);
+            btnContEl.appendChild(seeDetailsBtnEl);
+            btnContEl.appendChild(deleteBtnEl);
+
+            favEl.appendChild(favContEl);
+            favEl.appendChild(btnContEl);
     
             favListEl.appendChild(favEl);
         }
@@ -666,19 +686,91 @@ var favListBtnHandler = function(event)
         hoursEl.textContent = myFavList[id].restaurant.hours;
 
         //movies
-        
-        var movieImageEl = document.querySelector("#movie-img");
-        movieImageEl.src = myFavList[id].movie.img;
-        var titleEl = document.querySelector("#movie-title");
-        titleEl.textContent = myFavList[id].movie.title
-        var voteEl = document.querySelector("#movie-vote");
-        voteEl.textContent =myFavList[id].movie.rate ;
-        var genreEl= document.querySelector("#movie-genre")
-        genreEl.textContent =myFavList[id].movie.genre;
-        var releaseDateEl = document.querySelector("#movie-releaseDate");
-        releaseDateEl.textContent = myFavList[id].movie.releaseDate;
-        var overviewEl = document.querySelector("#movie-overview");
-        overviewEl.textContent =myFavList[id].movie.overview;
+        var movieContainerEl = document.querySelector("#movie-or-map-container");
+        var cardImageEl = document.querySelector("#card-image");
+        var cardcontEl = document.querySelector("#card-content");
+        var mapCardEl = document.querySelector("#Map-Card");
+
+
+
+        if(myFavList[id].movie.title) //if this indoor date
+        {
+            console.log("If mapCardEl",mapCardEl);
+            if(mapCardEl)
+            {
+                mapCardEl.style.display ="none";   
+            }
+
+            console.log("If cardImageEl",cardImageEl);
+            if (cardImageEl)
+            {
+                cardImageEl.style.display ="block";
+                cardcontEl.style.display ="block";
+                var movieImageEl = document.querySelector("#movie-img");
+                var titleEl = document.querySelector("#movie-title");
+                var voteEl = document.querySelector("#movie-vote");
+                var genreEl= document.querySelector("#movie-genre");
+                var releaseDateEl = document.querySelector("#movie-releaseDate");
+                var overviewEl = document.querySelector("#movie-overview");
+            }
+            else
+            {
+                var cardImageEl = document.createElement('div');
+                cardImageEl.id = 'card-image';
+                cardImageEl.className = 'card-image';
+                var movieImageEl = document.createElement('img');
+                movieImageEl.id = 'movie-img';
+                cardImageEl.appendChild(movieImageEl);
+    
+                var cardContentEl = document.createElement('div');
+                cardContentEl.id = 'card-content';
+                cardContentEl.className = 'card-content';
+                var titleEl = document.createElement('span');
+                titleEl.id = 'movie-title';
+                titleEl.className = "movie-title";
+                var voteEl = document.createElement('p');
+                voteEl.id="movie-vote";
+                var genreEl= document.createElement('p');
+                genreEl.id="movie-genre";
+                var releaseDateEl = document.createElement('p');
+                releaseDateEl.id="movie-releaseDate";
+                var overviewEl = document.createElement('p');
+                overviewEl.id="movie-overview";
+
+                cardContentEl.appendChild(titleEl);
+                cardContentEl.appendChild(voteEl);
+                cardContentEl.appendChild(genreEl);
+                cardContentEl.appendChild(releaseDateEl);
+                cardContentEl.appendChild(overviewEl);
+    
+                movieContainerEl.appendChild(cardImageEl);
+                movieContainerEl.appendChild(cardContentEl);         
+            }
+            movieImageEl.src = myFavList[id].movie.img;
+            titleEl.textContent = myFavList[id].movie.title;
+            voteEl.textContent =myFavList[id].movie.rate;
+            genreEl.textContent =myFavList[id].movie.genre;
+            releaseDateEl.textContent = myFavList[id].movie.releaseDate;
+            overviewEl.textContent =myFavList[id].movie.overview;
+        }
+        else
+        {
+            console.log("Else cardImageEl",cardImageEl);
+            if(cardImageEl)
+            {
+                cardImageEl.style.display ="none";
+                cardcontEl.style.display ="none";
+            }   
+            console.log("Else mapCardEl",mapCardEl);
+            if(mapCardEl)
+            {
+                mapCardEl.style.display ="block";   
+            }
+            generateMapCard(myFavList[id].restaurant.restLat, myFavList[id].restaurant.restLng);
+            // myFavList[id].restaurant.hours;
+        }
+
+
 
         var headerEl = document.querySelector(".main-section-copy");
         headerEl.style.display ="none";
@@ -686,7 +778,8 @@ var favListBtnHandler = function(event)
         weatherEl.style.display ="none";
 
         var historyEl = document.querySelector("#history");
-        historyEl .style.display ="block";
+        historyEl.style.display ="block";
+        historyEl.innerHTML = "";
 
         var historyContentEl = document.createElement("h2");
         historyContentEl.textContent = "Favorite "+ myFavList[id].mood +":";

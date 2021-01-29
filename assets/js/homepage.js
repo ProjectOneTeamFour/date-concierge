@@ -7,25 +7,66 @@ var userName = '';
 var date = '';
 var mood = '';
 
+var showMessage = function(msg) 
+{
+    // populate message container with msg
+    $("#message") 
+        .empty()
+        .html(msg);
+    
+    messageModalInstance.open(); // display message modal
+}
+
+var clearInputs = function (elementArr)
+{
+    elementArr.map( item => {
+        item.value = "";
+    });
+}
+
 var changePage = function(event)
 {
     event.preventDefault();
 
-    console.log(moodEl);
+    // console.log(moodEl);
     userName = userNameEl.value;
     date = dateEl.value;
     mood = moodEl.value;
 
-    console.log(userName,date,mood);
-    
-    if(userName && date && mood) 
-    {
-        document.location.replace("./dateresults.html"+"?username="+userName+"&date="+date+"&mood="+mood);
-    } 
-    else 
-    {
-        console.log("error"); // replace with forum
+    // Validation
+    var errMsg = ""; // initialize error message 
+    var elementList = []; // initialize DOM elements to be reset
+
+    if ( userName === "" ) {
+        errMsg += "User name cannot be empty<br />";
+        elementList.push(userNameEl);
     }
+
+    if (!moment(date).isValid()){
+        errMsg += "Date is not valid<br />";
+        elementList.push(dateEl);
+    }
+
+    if ( mood === "" ) {
+        errMsg += "Please select a mood type from the dropdown list<br />";
+        elementList.push(moodEl);
+    }
+    
+    if ( errMsg !== "" ) {
+        showMessage(errMsg);
+        clearInputs(elementList);
+    } else {
+        document.location.replace("./dateresults.html"+"?username="+userName+"&date="+date+"&mood="+mood);
+    }
+    
+    // if(userName && date && mood) 
+    // {
+    //     document.location.replace("./dateresults.html"+"?username="+userName+"&date="+date+"&mood="+mood);
+    // } 
+    // else 
+    // {
+    //     console.log("error"); // replace with forum
+    // }
 };
 
 var today = new Date();
@@ -38,11 +79,20 @@ $("#date").datepicker(
     minDate : today,
     maxDate : nextWeek,
     // autoclose: true
-    onSelect: function(date) 
-    {
+    // onSelect: function(date) 
+    // {
       
-    }
+    // }
 });
+
+$(document).ready(function()
+{
+    $('.modal').modal(); // initialize modal
+    // Get an instance of message modal
+    messageModalInstance = M.Modal.getInstance($('#homepageMessageModal'));
+    messageModalInstance.options.dismissible = false;
+    
+}); 
 
 // Initialize select
 $('select').formSelect();

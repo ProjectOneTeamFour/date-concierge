@@ -858,6 +858,8 @@ $(document).ready(function()
 {
     $('.modal').modal(); // initialize modal
     
+    $('.sidenav').sidenav();
+
     // Get an instance of message modal
     messageModalInstance = M.Modal.getInstance($('#messageModal'));
     messageModalInstance.options.dismissible = false;
@@ -879,6 +881,16 @@ $('#fav-list-nav').click(function(event)
 
 });
 
+$('#fav-list-nav-sidenav').click(function(event) 
+{
+    event.preventDefault();
+    showFavList();
+    $('.modal').modal(); // initialize modal
+    lovelistModalInstance = M.Modal.getInstance($('#lovelistmodal')); 
+    lovelistModalInstance.options.dismissible = true;
+    lovelistModalInstance.open();
+
+});
 // Change input link click event handler
 $('#change-input').click(function(event) 
 {
@@ -886,6 +898,11 @@ $('#change-input').click(function(event)
     document.location.replace("./index.html"); 
 });
 
+$('#change-input-sidenav').click(function(event) 
+{
+    event.preventDefault();
+    document.location.replace("./index.html"); 
+});
 
 initializePageView();
 

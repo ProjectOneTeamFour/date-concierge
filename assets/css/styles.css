@@ -9,6 +9,7 @@
 .form-height {
     height: 100%;
 }
+
 /*Background Options */
 .main-background {
     background-color: var(--pink);
@@ -30,9 +31,14 @@
 .white-font {
     color: var(--white)
 }
+
 /*Button Options */
 .nav-button-background {
     background-color: var(--grey);
+}
+
+nav.main-background {
+    min-height: 64px;
 }
 
 .footer-links:hover {
@@ -162,8 +168,8 @@ main#landing-page {
 
 #weather-card {
     width: 350px;
-    height: 180px;
-    margin-left: auto!important;
+    /* height: auto; */
+    /* margin-left: auto!important; */
 }
 
 #div-temperature {
@@ -201,4 +207,27 @@ main#landing-page {
 
 .modal-btn {
     margin: 20px auto;
+}
+
+.sidenav {
+    opacity: 90%;
+}
+
+/* Media Query for Tablets and smaller screens */
+@media screen and (max-width: 980px) {
+    .sidenav li {
+        width: 100%;
+        margin: 0 0 4px 0;
+    }
+
+    #weather-card {
+        width: 50%;
+        margin: 0 auto;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #weather-card {
+        width: 100%;
+    }
 }

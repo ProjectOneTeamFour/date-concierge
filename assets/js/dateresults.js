@@ -24,13 +24,20 @@ var params = (new URL(document.location)).searchParams;
 var username = params.get('username');
 var date = params.get('date');
 var mood = params.get('mood');
+var latAttribute = parseFloat(params.get('lat'));
+var lonAttribute = parseFloat(params.get('lon'));
+
 
 
 //variables
-var userLocation = {}; // stores user location
+var userLocation = {
+    latitude:latAttribute,
+    longitude:lonAttribute,
+}; // stores user location
+
 var genreList;
 var temperature = "";
-var controlTemp = 20;
+var controlTemp = -20;
 var inOrOut = "DINE OUT";
 
 var myFavList = [];
@@ -69,13 +76,13 @@ var fav =
 //get location function
 //input : user accept
 //output: coordinates
-var getLocation = function() 
-{
-    return new Promise(function(resolve, reject) 
-    {
-        navigator.geolocation.getCurrentPosition(resolve, reject);
-    })
-}
+// var getLocation = function() 
+// {
+//     return new Promise(function(resolve, reject) 
+//     {
+//         navigator.geolocation.getCurrentPosition(resolve, reject);
+//     })
+// }
 
 // helper function to format unix timestamp
 let getDateFromTimeStamp = function(timeStamp, timezoneOffset) {
@@ -521,13 +528,15 @@ var displayResults = function()
 {
     if(navigator.geolocation) 
     {
-        getLocation()
-            .then(function(location)
-            {
-                userLocation.latitude = location.coords.latitude;
-                userLocation.longitude = location.coords.longitude;
-                return getWeatherData();
-            })
+        // getLocation()
+        //     .then(function(location)
+        //     {
+        //         userLocation.latitude = location.coords.latitude;
+        //         userLocation.longitude = location.coords.longitude;
+                // return 
+                getWeatherData()
+                // ;
+            // })
             .then(function(response) 
             {
                 if(response.ok)
@@ -593,9 +602,7 @@ var addToList = function()
 
     loadFavList();
     fav.mood = mood;
-    console.log(myFavList,fav);
     myFavList.unshift(fav);
-    console.log(myFavList);
 
     saveFavlist();
     showMessage("Woo hoo! We've added this date night suggestion to your ♥ List!");
@@ -625,7 +632,10 @@ var showFavList = function()
             // console.log(movieEl.textContent,myFavList.title[i]);
 
             var movieEl = document.createElement("p");
-            movieEl.textContent = "Movies: " +  myFavList[i].movie.title;
+            if(myFavList[i].movie.title)
+            {
+                movieEl.textContent = "Movies: " +  myFavList[i].movie.title;
+            }
             // console.log(movieEl.textContent,myFavList.title[i]);
 
             var seeDetailsBtnEl = document.createElement("button");
@@ -826,9 +836,9 @@ var initializePageView = function()
 {
     loadFavList();
     $("#user-name").text(username);
-    if($.isEmptyObject(userLocation)) {
+    // if($.isEmptyObject(userLocation)) {
         displayResults();
-    }
+    // }
 }
 
 var showMessage = function(msg, err = false) 

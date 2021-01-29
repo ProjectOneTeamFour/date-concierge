@@ -21,36 +21,41 @@
         <nav class="main-background">
             <div class="nav-wrapper">
                 <img class="brand-logo" src="assets/images/logo-horizontal.png" alt="date concierge logo">
+                <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li class="waves-effect waves-light btn-large nav-button-background" id="change-input">Change my Details</li>
                     <li class="waves-effect waves-light btn-large nav-button-background" id="fav-list-nav"  href="#lovelistmodal">My ♥ List</li>
                 </ul>
             </div>
         </nav>
+        <ul class="sidenav" id="mobile-nav">
+            <li class="waves-effect waves-light btn-large nav-button-background" id="change-input-sidenav">Change my Details</li>
+            <li class="waves-effect waves-light btn-large nav-button-background" id="fav-list-nav-sidenav"  href="#lovelistmodal">My ♥ List</li>
+        </ul>
     </header>
 
     <main>
         <div class="container row">
             <div id="history"></div>
-            <div class="col s8">
+            <div class="col s12 m12 l8">
                 <div class="main-section-copy">
                     <h2>Get ready. Get dressed. Here's what we've got lined up for you, <span id="user-name"></span>.</h2>
                     <p id="intro-paragraph"></p>
                 </div>
             </div>
-            <div class="col s4">
+            <div class="col s12 m12 l4">
                 <div id="weather-container">
                 </div>
             </div> 
         </div>
         <div class="divider"></div>
         <div class="container row">
-            <div id="restaurant-container" class="col s6">
+            <div id="restaurant-container" class="col s12 m6">
                 <h4 id="menu-header">On the menu</h4>
                 <p id="menu-text"></p>
                 <div id="restaurant-info" class="card"></div>
             </div>
-            <div class="col s6">
+            <div class="col s12 m6">
                 <div class="secondary-activity-info"></div>
                 <h4 id="movie-header"></h4>
                 <p id="movie-text"></p>

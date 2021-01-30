@@ -6,6 +6,27 @@ var moodEl = document.querySelector("#mood");
 var userName = '';
 var date = '';
 var mood = '';
+var lat = '';
+var lon = '';
+
+var getAttribute = function(event)
+{
+    event.preventDefault();
+
+    userName = userNameEl.value;
+    date = dateEl.value;
+    mood = moodEl.value;
+
+    if($('#GPS').is(':checked')) 
+    { 
+        getYourCordinates();
+    }
+
+    if($('#cityRB').is(':checked')) 
+    {
+        getCityCoordinates($("#city-name").val());
+    }
+};
 
 var showMessage = function(msg) 
 {
@@ -24,15 +45,67 @@ var clearInputs = function (elementArr)
     });
 }
 
+var getYourCordinates = function()
+{
+    if(navigator.geolocation) 
+    {
+        getYourLocation()
+            .then(function(location)
+            {
+                lat = location.coords.latitude;
+                lon = location.coords.longitude;
+                console.log(lat , lon);
+                changePage();
+            });
+    }
+}
+
+var getYourLocation = function() 
+{
+    return new Promise(function(resolve, reject) 
+    {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+    });
+}
+
+var getCityCoordinates = function(country)
+{
+    var geocoderURL = 'https://api.geoapify.com/v1/geocode/search?text='+country+'&apiKey=66581d18c13944d7b6795dd99dccd7a2';
+    if(country==='')
+    {
+        showMessage("City name cannot be empty");
+    }
+    else
+    {
+        fetch(geocoderURL)
+        .then(function(response)
+        {
+            response.json().then(function(data)
+            {
+                if(data.features[0])
+                {
+                    lat = data.features[0].properties.lat;
+                    lon = data.features[0].properties.lon;
+                    // console.log(data.features[0].properties.formatted)
+                    changePage();
+                }
+                else //if searched city not available
+                {
+                    showMessage("Please enter a valid city name");
+                }
+            })
+            
+
+        })
+        .catch(function(error)
+        {
+            showMessage("Cannot connect to the server");
+        });
+    }
+};
+
 var changePage = function(event)
 {
-    event.preventDefault();
-
-    // console.log(moodEl);
-    userName = userNameEl.value;
-    date = dateEl.value;
-    mood = moodEl.value;
-
     // Validation
     var errMsg = ""; // initialize error message 
     var elementList = []; // initialize DOM elements to be reset
@@ -56,17 +129,9 @@ var changePage = function(event)
         showMessage(errMsg);
         clearInputs(elementList);
     } else {
-        document.location.replace("./dateresults.html"+"?username="+userName+"&date="+date+"&mood="+mood);
+        document.location.replace("./dateresults.html"+"?username="+userName+"&date="+date+"&mood="+mood+"&lat="+lat+"&lon="+lon);
     }
     
-    // if(userName && date && mood) 
-    // {
-    //     document.location.replace("./dateresults.html"+"?username="+userName+"&date="+date+"&mood="+mood);
-    // } 
-    // else 
-    // {
-    //     console.log("error"); // replace with forum
-    // }
 };
 
 var today = new Date();
@@ -85,6 +150,23 @@ $("#date").datepicker(
     // }
 });
 
+$('#cityRB').click(function() 
+{
+    if($('#cityRB').is(':checked')) 
+    { 
+        $("#city-name").prop('disabled', false);
+    }
+ });
+
+ $('#GPS').click(function() 
+{
+    if($('#GPS').is(':checked')) 
+    { 
+        $("#city-name").prop('disabled', true);
+        $("#city-name").val("");
+    }
+});
+
 $(document).ready(function()
 {
     $('.modal').modal(); // initialize modal
@@ -97,4 +179,4 @@ $(document).ready(function()
 // Initialize select
 $('select').formSelect();
 
-submitFromEl.addEventListener("submit", changePage);
+submitFromEl.addEventListener("submit", getAttribute);

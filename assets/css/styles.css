@@ -137,6 +137,27 @@ textarea.materialize-textarea:focus:not([readonly])
     box-shadow: 0 1px 0 0 var(--pink);
 }
 
+[type="radio"]:checked+span:after, 
+[type="radio"].with-gap:checked+span:after 
+{
+    background-color: var(--pink);
+}
+
+[type="radio"]:checked+span:after,
+[type="radio"].with-gap:checked+span:before, 
+[type="radio"].with-gap:checked+span:after 
+{
+    border: 2px solid var(--pink);
+}
+
+#cityRB+span:before, 
+#cityRB+span:after 
+
+{ 
+    top: 10px;
+}
+
+
 .select-wrapper input.select-dropdown:focus 
 {
     border-bottom: 1px solid var(--pink);

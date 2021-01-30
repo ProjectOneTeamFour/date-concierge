@@ -26,6 +26,7 @@ var date = params.get('date');
 var mood = params.get('mood');
 var latAttribute = parseFloat(params.get('lat'));
 var lonAttribute = parseFloat(params.get('lon'));
+var restCount = 0;
 
 
 //variables
@@ -227,12 +228,20 @@ var generateRestaurantCard = function(restaurant) {
             "max-width":"100%",
             "max-height":"100%"
         });
+        if (inOrOut === "DINE OUT"){
+            generateMapCard(restaurant[x].restLat, restaurant[x].restLng);
+        };  
     } else {
+        if (restCount>19){
+            
+            showMessage("No Restuarants in your area available. Please change location.", true);
+            
+        }
+        restCount++;
+        console.log(mood, restCount);
         getRestaurantData();
     };
-    if (inOrOut === "DINE OUT"){
-        generateMapCard(restaurant[x].restLat, restaurant[x].restLng);
-    };  
+      
 }
 
 //get types of restaurants and movies based on the mood
@@ -321,6 +330,9 @@ var getRestaurantData = function()
     var restaurant = [{restName:"", cuisine:"", address:"", restImg:"", costForTwo:"", restHours:"", restLat:"", restLng:"", phone:""}];
     var lat = userLocation.latitude;
     var lng = userLocation.longitude;
+    if (restCount>9){
+        mood = "spontaneous";
+    }
     var cuisine = getMoodTypes().cuisine;
     var cuisineID = cuisine.split("-");
     var searchRadius = 500000;

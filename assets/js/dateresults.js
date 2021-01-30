@@ -1,4 +1,4 @@
-// Elements
+// DOM element selectors
 var nextBtnEl = document.querySelector("#next-btn");
 var saveBtnEl = document.querySelector("#save-btn");
 var movieMapContainerEl = document.querySelector("#movie-or-map-container");
@@ -73,8 +73,8 @@ var fav =
 
 
 // helper function to format unix timestamp
-let getDateFromTimeStamp = function(timeStamp, timezoneOffset) {
-    return moment.unix(timeStamp + timezoneOffset).utc().format("MM-DD-YYYY");
+let getDateFromTimeStamp = function(timeStamp, timezoneOffset, dateFormat) {
+    return moment.unix(timeStamp + timezoneOffset).utc().format(dateFormat);
 }
 
 // helper function to capitalize first letter
@@ -99,13 +99,13 @@ var generateIntroText = function () {
        }
 }
 
-var generateWeatherCard = function(temperature, weatherDescription, weatherIcon) { 
+var generateWeatherCard = function(temperature, weatherDescription, weatherIcon, formattedDate) { 
     var cardEl = $("<div>")
         .addClass("card")
         .attr("id", "weather-card")
         .html(`
             <div class="card-panel">
-                <h4>The forecast for ${date} </h4>
+                <h4>The forecast for ${formattedDate} </h4>
                 <p> ${capitalizeFirstLetter(weatherDescription)}, with a chance of romance.</p>
                 <div id="current-weather">
                     <div class="row">
@@ -154,7 +154,7 @@ var generateRestaurantCard = function(restaurant) {
 
      //hayley add
     if (inOrOut === "DINE OUT") {
-     menuIntroText.textContent ="Let's hit the town. Grab your phone, make a reservation and we're off."
+        menuIntroText.textContent ="Let's hit the town. Grab your phone, make a reservation and we're off."
     } else {
         menuIntroText.textContent ="Let's stay in. Get Cozy, and grab your phone. We're ordering takeout."
     }
@@ -326,8 +326,7 @@ var getRestaurantData = function()
     var searchRadius = 500000;
     
     var url = `https://developers.zomato.com/api/v2.1/search?entity_type=metro&lat=${lat}&lon=${lng}&radius=${searchRadius}&cuisines=${cuisineID}&sort=rating`;
-    //https://developers.zomato.com/api/v2.1/search?entity_type=metro&lat=43.7080973&lon=-79.395311499&radius=2500&cuisines=142&sort=rating
-    //var urlcuisines = "https://developers.zomato.com/api/v2.1/cuisines?city_id=89"
+    
     var config = 
     {
         headers: 
@@ -356,8 +355,6 @@ var getRestaurantData = function()
                 if (i===4) {
                     break;
                 };
-                
-           //console.log(data.cuisines[i].cuisine.cuisine_name,"-"+data.cuisines[i].cuisine.cuisine_id);
             };
             generateRestaurantCard(restaurant);
           });
@@ -380,7 +377,7 @@ var getMovieData = function()
 {
     //placed this here so its not created if the weather is triggered
     if (temperature < controlTemp){
-        inOrOut = "STAY IN";
+        // inOrOut = "STAY IN";
         var movieGenre = getMoodTypes().genre;
         fetch("https://api.themoviedb.org/3/genre/movie/list?api_key="+ TMDB_API_KEY +"&language=en-US")
         .then(function(response)
@@ -532,14 +529,20 @@ var displayResults = function()
             // Populate weather data
             data.daily.map((item, ind) => 
             {
-                var tempDate = getDateFromTimeStamp(item.dt, data.timezone_offset);
+                var tempDate = getDateFromTimeStamp(item.dt, data.timezone_offset, "MM-DD-YYYY");
                 if (tempDate === date) 
                 {
                     temperature = item.temp.eve;
-                    generateWeatherCard(item.temp.eve, item.weather[0].description, item.weather[0].icon);
-                    if(item.temp.eve < 10.0)
+                    var formattedDate = getDateFromTimeStamp(item.dt, data.timezone_offset, "dddd MMM DD, YYYY");
+                    generateWeatherCard(item.temp.eve, item.weather[0].description, item.weather[0].icon, formattedDate);
+                    if(temperature < controlTemp)
                     {
+                        inOrOut = "STAY IN"
                         getMovieData();
+                    }
+                    else
+                    {
+                        inOrOut = "DINE OUT"
                     }
                 }
             });
@@ -606,14 +609,12 @@ var showFavList = function()
 
             var dinnerEl = document.createElement("p");
             dinnerEl.textContent = "Dinner: " + myFavList[i].restaurant.name;
-            // console.log(movieEl.textContent,myFavList.title[i]);
 
             var movieEl = document.createElement("p");
             if(myFavList[i].movie.title)
             {
                 movieEl.textContent = "Movies: " +  myFavList[i].movie.title;
             }
-            // console.log(movieEl.textContent,myFavList.title[i]);
 
             var seeDetailsBtnEl = document.createElement("button");
             seeDetailsBtnEl.setAttribute("fav-date-id", i);
@@ -817,8 +818,8 @@ var showMessage = function(msg, err = false)
     
     // update color class
     $("#messageModal")
-        .removeClass("teal deep-orange")
-        .addClass(err ? "deep-orange" : "teal");
+        .removeClass("color-error color-success")
+        .addClass(err ? "color-error" : "color-success");
     
     messageModalInstance.open(); // display message modal
     setTimeout(function(){
@@ -835,7 +836,7 @@ $(document).ready(function()
 {
     $('.modal').modal(); // initialize modal
     
-    $('.sidenav').sidenav();
+    $('.sidenav').sidenav(); // initialize sidenav
 
     // Get an instance of message modal
     messageModalInstance = M.Modal.getInstance($('#messageModal'));
@@ -847,7 +848,8 @@ $(document).ready(function()
     loadingModalInstance.open();
 }); 
 
-$('#fav-list-nav').click(function(event) 
+// Favourite list Navbar link click event handler
+var favListClickEventHandler = function(event) 
 {
     event.preventDefault();
     showFavList();
@@ -855,34 +857,23 @@ $('#fav-list-nav').click(function(event)
     lovelistModalInstance = M.Modal.getInstance($('#lovelistmodal')); 
     lovelistModalInstance.options.dismissible = true;
     lovelistModalInstance.open();
+}
 
-});
-
-$('#fav-list-nav-sidenav').click(function(event) 
-{
-    event.preventDefault();
-    showFavList();
-    $('.modal').modal(); // initialize modal
-    lovelistModalInstance = M.Modal.getInstance($('#lovelistmodal')); 
-    lovelistModalInstance.options.dismissible = true;
-    lovelistModalInstance.open();
-
-});
-// Change input link click event handler
-$('#change-input').click(function(event) 
+// Change details navbar link click event handler
+var changeInputClickEventHandler = function(event) 
 {
     event.preventDefault();
     document.location.replace("./index.html"); 
-});
+}
 
-$('#change-input-sidenav').click(function(event) 
-{
-    event.preventDefault();
-    document.location.replace("./index.html"); 
-});
+$('#fav-list-nav').click(favListClickEventHandler);
+$('#fav-list-nav-sidenav').click(favListClickEventHandler);
 
-initializePageView();
+$('#change-input').click(changeInputClickEventHandler);
+$('#change-input-sidenav').click(changeInputClickEventHandler);
 
 nextBtnEl.addEventListener("click", nextBtnHandler);
 saveBtnEl.addEventListener("click", addToList);
 favListEl.addEventListener('click',favListBtnHandler);
+
+initializePageView();

@@ -179,6 +179,11 @@ textarea.materialize-textarea:focus:not([readonly])
     border-radius: 10px;
 }
 
+#homepageMessageModal {
+    max-width: 500px;
+    border-radius: 10px;
+}
+
 main#landing-page {
     min-height: 100vh;
 }
@@ -243,6 +248,14 @@ main#landing-page {
 
 iframe{
     width: 100%;
+}
+
+.color-error {
+    background-color: #f8d7da;
+}
+
+.color-success {
+    background-color: #d4edda;
 }
 
 /* Media Query for Tablets and smaller screens */

@@ -115,7 +115,7 @@ var changePage = function(event)
         elementList.push(userNameEl);
     }
 
-    if (!moment(date).isValid()){
+    if (!Date.parse(date)) {
         errMsg += "Date is not valid<br />";
         elementList.push(dateEl);
     }

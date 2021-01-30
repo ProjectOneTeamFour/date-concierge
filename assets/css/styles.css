@@ -234,6 +234,17 @@ main#landing-page {
     opacity: 90%;
 }
 
+.modal-btn{
+    flex-wrap: wrap;
+}
+.card-panel{
+    padding: 5px;
+}
+
+iframe{
+    width: 100%;
+}
+
 /* Media Query for Tablets and smaller screens */
 @media screen and (max-width: 980px) {
     .sidenav li {
@@ -248,7 +259,27 @@ main#landing-page {
 }
 
 @media screen and (max-width: 768px) {
-    #weather-card {
+    #weather-card,
+    #main-page-card{
         width: 100%;
+    }
+    #lovelistmodal,
+    #modal-content,
+    .preloader-wrapper,
+    .modal{
+        width: 80%;
+    }
+
+    .modal{
+        position: fixed;
+        left: 10%;
+    }
+
+    iframe{
+        width: 100%;
+    }
+
+    .modal{
+        margin: 0px;
     }
 }

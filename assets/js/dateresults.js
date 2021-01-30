@@ -496,7 +496,6 @@ var getMovieData = function()
                         movieGenreNames += " " + allGenres[j].name+",";
                         break;
                     }
-
                 }
             }
 
@@ -512,51 +511,52 @@ var getMovieData = function()
 // choose indoor or outdoor then display the results
 var displayResults = function() 
 {
-    if(navigator.geolocation) 
-    {
-        return getWeatherData()
-            .then(function(response) 
+    getWeatherData()
+        .then(function(response) 
+        {
+            if(response.ok)
             {
-                if(response.ok)
-                {
-                    return response.json();
-                } 
-                else 
-                {
-                    showMessage("Error: " + response.statusText, true);
-                }
-            })
-            .then(function(data) 
+                return response.json();
+            } 
+            else 
             {
-                if(!data)
+                showMessage("Error: " + response.statusText, true);
+            }
+        })
+        .then(function(data) 
+        {
+            if(!data)
+            {
+                return;
+            }
+            // Populate weather data
+            data.daily.map((item, ind) => 
+            {
+                var tempDate = getDateFromTimeStamp(item.dt, data.timezone_offset);
+                if (tempDate === date) 
                 {
-                    return;
-                }
-                // Populate weather data
-                data.daily.map((item, ind) => {
-                    var tempDate = getDateFromTimeStamp(item.dt, data.timezone_offset);
-                    if (tempDate === date) {
-                        temperature = item.temp.eve;
-                        generateWeatherCard(item.temp.eve, item.weather[0].description, item.weather[0].icon);
-                        if(item.temp.eve < 10.0){
-                            getMovieData();
-                        }
+                    temperature = item.temp.eve;
+                    generateWeatherCard(item.temp.eve, item.weather[0].description, item.weather[0].icon);
+                    if(item.temp.eve < 10.0)
+                    {
+                        getMovieData();
                     }
-                });
-                loadingModalInstance.close();
-
-                //NOT SURE IF THIS IS WHERE IT SHOULD GO<< BUT PLACING HERE FOR NOW (CURTIS)
-                getRestaurantData();
-
-                //not sure if this is where it should go, but here it is for now.
-                generateIntroText();
-            })
-            .catch(function(error)
-            {
-                loadingModalInstance.close();
-                showMessage("Could not complete operation", true);
+                }
             });
-    }       
+            loadingModalInstance.close();
+
+            //NOT SURE IF THIS IS WHERE IT SHOULD GO<< BUT PLACING HERE FOR NOW (CURTIS)
+            getRestaurantData();
+
+            //not sure if this is where it should go, but here it is for now.
+            generateIntroText();
+        })
+        .catch(function(error)
+        {
+            loadingModalInstance.close();
+            showMessage("Could not complete operation", true);
+        });
+     
 }
 
 // show next movie and restaurant

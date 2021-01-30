@@ -52,31 +52,61 @@ var getYourLocation = function()
     });
 }
 
+// var getCityCoordinates = function(country)
+// {
+//     var weatherURL = "https://api.openweathermap.org/data/2.5/weather?appid=274cbbc7cb2cf2adbf2edf074233aaec&q=" + country;
+//     fetch(weatherURL)
+//         .then(function(response)
+//         {
+//             if(response.ok) //if city available
+//             {
+//                 response.json().then(function(data)
+//                 {
+//                     lat = data.coord.lat; //get city altitude 
+//                     lon = data.coord.lon; //get city logtitude
+//                     changePage();
+//                 })
+//             }
+//             else //if searched city not available
+//             {
+//                 console.log("Please enter a valid city");
+//             }
+//         })
+//         .catch(function(error)
+//         {
+
+//         })
+// };
+
+
 var getCityCoordinates = function(country)
 {
-    var weatherURL = "https://api.openweathermap.org/data/2.5/weather?appid=274cbbc7cb2cf2adbf2edf074233aaec&q=" + country;
-    fetch(weatherURL)
+    var geocoderURL = 'https://api.geoapify.com/v1/geocode/search?text='+country+'&apiKey=66581d18c13944d7b6795dd99dccd7a2';
+    fetch(geocoderURL)
         .then(function(response)
         {
-            if(response.ok) //if city available
+            response.json().then(function(data)
             {
-                response.json().then(function(data)
+                if(data.features[0])
                 {
-                    lat = data.coord.lat; //get city altitude 
-                    lon = data.coord.lon; //get city logtitude
+                    lat = data.features[0].properties.lat;
+                    lon = data.features[0].properties.lon;
                     changePage();
-                })
-            }
-            else //if searched city not available
-            {
-                console.log("Please enter a valid city");
-            }
+                }
+                else //if searched city not available
+                {
+                    console.log("Please enter a valid city");
+                }
+            })
+            
+
         })
         .catch(function(error)
         {
-
-        })
+            console.log("enter");
+        });
 };
+
 
 var changePage = function()
 {

@@ -29,7 +29,7 @@ var performValidation = function()
 
     // check if date input is invalid
     if (!Date.parse(date)){
-        errMsg += "<li>" + date + "Date is not valid</li>";
+        errMsg += "<li>" + typeof date + "Date is not valid</li>";
         elementList.push(dateEl);
     }
 
@@ -198,7 +198,7 @@ $('#cityRB').click(function()
 $(document).ready(function()
 {
     $('.modal').modal(); // initialize modal
-    // $('.datepicker').datepicker();
+    
     // Initialize datepicker
     $("#date").datepicker(
     {

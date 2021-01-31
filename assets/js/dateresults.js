@@ -37,7 +37,7 @@ longitude:lonAttribute
 
 var genreList;
 var temperature = "";
-var controlTemp = -20;
+var controlTemp = 10;
 var inOrOut = "DINE OUT";
 
 var myFavList = [];

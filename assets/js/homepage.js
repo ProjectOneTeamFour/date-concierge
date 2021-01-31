@@ -169,13 +169,13 @@ var changePage = function()
     document.location.replace("./dateresults.html"+"?username="+userName+"&date="+date+"&mood="+mood+"&lat="+lat+"&lon="+lon);
 };
 
-// Initialize datepicker
-$("#date").datepicker(
-{
-    format: "mm-dd-yyyy",
-    minDate : today,
-    maxDate : nextWeek
-});
+// // Initialize datepicker
+// $("#date").datepicker(
+// {
+//     format: "mm-dd-yyyy",
+//     minDate : today,
+//     maxDate : nextWeek
+// });
 
 // handles radio button functionality
 $('#cityRB').click(function() 
@@ -198,7 +198,14 @@ $('#cityRB').click(function()
 $(document).ready(function()
 {
     $('.modal').modal(); // initialize modal
-    $('.datepicker').datepicker();
+    // $('.datepicker').datepicker();
+    // Initialize datepicker
+    $("#date").datepicker(
+    {
+        format: "mm-dd-yyyy",
+        minDate : today,
+        maxDate : nextWeek
+    });
     // Get an instance of message modal
     messageModalInstance = M.Modal.getInstance($('#homepageMessageModal'));
     messageModalInstance.options.dismissible = false;

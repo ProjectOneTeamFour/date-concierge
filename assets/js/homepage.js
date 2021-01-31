@@ -29,7 +29,7 @@ var performValidation = function()
 
     // check if date input is invalid
     if (!Date.parse(date)){
-        errMsg += "<li>" + typeof date + "Date is not valid</li>";
+        errMsg += "<li>" + Date.parse(date) + " Date is not valid</li>";
         elementList.push(dateEl);
     }
 

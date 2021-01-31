@@ -198,6 +198,7 @@ $('#cityRB').click(function()
 $(document).ready(function()
 {
     $('.modal').modal(); // initialize modal
+    $('.datepicker').datepicker();
     // Get an instance of message modal
     messageModalInstance = M.Modal.getInstance($('#homepageMessageModal'));
     messageModalInstance.options.dismissible = false;

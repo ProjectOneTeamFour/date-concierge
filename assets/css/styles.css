@@ -15,9 +15,6 @@
     background-color: var(--pink);
 }
 
-.main-section-copy h2{
-    font-size: 3rem;
-}
 .section-background {
     background-color: var(--white);
 }
@@ -267,6 +264,10 @@ iframe{
     .sidenav li {
         width: 100%;
         margin: 0 0 4px 0;
+    }
+
+    .main-section-copy h2{
+        font-size: 3rem;
     }
 
     #weather-card {

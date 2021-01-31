@@ -1,0 +1,310 @@
+/* Website Colour Palette */
+:root {
+    --pink: #fb6486;
+    --grey: #302d2e;
+    --white: #ffffff;
+}
+
+/* Home page height fix */
+.form-height {
+    height: 100%;
+}
+
+/*Background Options */
+.main-background {
+    background-color: var(--pink);
+}
+
+.section-background {
+    background-color: var(--white);
+}
+
+.grey-background {
+    background-color: var(--grey);
+}
+
+nav.main-background {
+    min-height: 64px;
+}
+
+/*Font color options */
+.pink-font {
+    color: var(--pink)
+}
+
+.white-font {
+    color: var(--white)
+}
+
+/*Button Options */
+.nav-button-background {
+    background-color: var(--grey);
+}
+
+/*Footer Options */
+.footer-links:hover {
+    color: var(--grey);
+}
+/*Customize Framework CSS */
+.datepicker-table td.is-today,
+.datepicker-cancel,
+.datepicker-clear,
+.datepicker-today,
+.datepicker-done
+{
+    color:var(--pink);
+}
+
+/* change the color and background color of datepicker */
+.datepicker-table td.is-selected,
+.datepicker-date-display 
+{
+    background-color: var(--pink);
+    color: var(--white);
+}
+
+/* change the color of select drop list */
+.dropdown-content li>a,
+.dropdown-content li>span 
+{
+    color: var(--pink);
+}
+.btn:hover, .btn-large:hover, .btn-small:hover {
+    background-color:var(--pink);
+}
+
+.teal.accent-1 {
+    background-color: #faa9bc !important;
+}
+
+
+.btn:focus, .btn-large:focus, .btn-small:focus, .btn-floating:focus {
+    background-color: #ca536f;
+}
+
+.collection .collection-item {
+    background-color: #fff2f5;
+}
+
+
+input.valid:not([type]),
+input.valid:not([type]):focus,
+input.valid[type=text]:not(.browser-default),
+input.valid[type=text]:not(.browser-default):focus,
+input.valid[type=password]:not(.browser-default),
+input.valid[type=password]:not(.browser-default):focus,
+input.valid[type=email]:not(.browser-default),
+input.valid[type=email]:not(.browser-default):focus,
+input.valid[type=url]:not(.browser-default),
+input.valid[type=url]:not(.browser-default):focus,
+input.valid[type=time]:not(.browser-default),
+input.valid[type=time]:not(.browser-default):focus,
+input.valid[type=date]:not(.browser-default),
+input.valid[type=date]:not(.browser-default):focus,
+input.valid[type=datetime]:not(.browser-default),
+input.valid[type=datetime]:not(.browser-default):focus,
+input.valid[type=datetime-local]:not(.browser-default),
+input.valid[type=datetime-local]:not(.browser-default):focus,
+input.valid[type=tel]:not(.browser-default),
+input.valid[type=tel]:not(.browser-default):focus,
+input.valid[type=number]:not(.browser-default),
+input.valid[type=number]:not(.browser-default):focus,
+input.valid[type=search]:not(.browser-default),
+input.valid[type=search]:not(.browser-default):focus,
+textarea.materialize-textarea.valid,
+textarea.materialize-textarea.valid:focus,
+.select-wrapper.valid>input.select-dropdown 
+{
+    border-bottom: 1px solid var(--pink);
+    -webkit-box-shadow: 0 1px 0 0 var(--pink);
+    box-shadow: 0 1px 0 0 var(--pink);
+}
+
+input:not([type]):focus:not([readonly]),
+input[type=text]:not(.browser-default):focus:not([readonly]),
+input[type=password]:not(.browser-default):focus:not([readonly]),
+input[type=email]:not(.browser-default):focus:not([readonly]), 
+input[type=url]:not(.browser-default):focus:not([readonly]), 
+input[type=time]:not(.browser-default):focus:not([readonly]), 
+input[type=date]:not(.browser-default):focus:not([readonly]), 
+input[type=datetime]:not(.browser-default):focus:not([readonly]), 
+input[type=datetime-local]:not(.browser-default):focus:not([readonly]), 
+input[type=tel]:not(.browser-default):focus:not([readonly]), 
+input[type=number]:not(.browser-default):focus:not([readonly]),
+input[type=search]:not(.browser-default):focus:not([readonly]), 
+textarea.materialize-textarea:focus:not([readonly]) 
+{
+    border-bottom: 1px solid var(--pink);
+    -webkit-box-shadow: 0 1px 0 0 var(--pink);
+    box-shadow: 0 1px 0 0 var(--pink);
+}
+
+[type="radio"]:checked+span:after, 
+[type="radio"].with-gap:checked+span:after 
+{
+    background-color: var(--pink);
+}
+
+[type="radio"]:checked+span:after,
+[type="radio"].with-gap:checked+span:before, 
+[type="radio"].with-gap:checked+span:after 
+{
+    border: 2px solid var(--pink);
+}
+
+/*Radio Button Options */
+#cityRB+span:before, 
+#cityRB+span:after 
+
+{ 
+    top: 10px;
+}
+
+/*Select Options */
+.select-wrapper input.select-dropdown:focus 
+{
+    border-bottom: 1px solid var(--pink);
+}
+
+/*Modals */
+#loadingModal {
+    height: 300px;
+    width: 500px;
+    border-radius: 10px;
+}
+
+#loadingModal .modal-content .center-align {
+    margin-top: 30px;
+}
+
+#messageModal {
+    height: 150px;
+    width: 500px;
+    border-radius: 10px;
+}
+
+#homepageMessageModal {
+    max-width: 500px;
+    border-radius: 10px;
+}
+
+main#landing-page {
+    min-height: 100vh;
+}
+
+/*Cards */
+#main-page-card {
+    width: 410px;
+}
+
+#weather-card {
+    width: 350px;
+    /* height: auto; */
+    /* margin-left: auto!important; */
+}
+
+#div-temperature {
+    font-size: 3rem;
+    padding-top: 10px;
+}
+
+#movie-or-map-container {
+    max-width: 450px;
+}
+.card-image{
+    height: 400px; /* Your height here */
+    overflow: hidden;
+}
+
+.card-image img{
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle
+}
+
+.card-content{
+   /*  height: 200px; Commented this out as it was adding unwanted space to the index.html card */
+    overflow: hidden;
+
+}
+
+#movie-or-map-container .card-content{
+    overflow-y: scroll;
+}
+
+.card-panel{
+    padding: 5px;
+}
+
+iframe{
+    width: 100%;
+}
+
+.modal-btn {
+    margin: 20px auto;
+    flex-wrap: wrap;
+}
+
+.sidenav {
+    opacity: 90%;
+}
+
+/* Utility classes */
+.m-2px-lr {
+    margin: 0 2px;
+}
+
+.color-error {
+    background-color: #f8d7da;
+}
+
+.color-success {
+    background-color: #d4edda;
+}
+
+/* Media Query for smaller desktop screens */
+@media screen and (max-width: 980px) {
+    .sidenav li {
+        width: 100%;
+        margin: 0 0 4px 0;
+    }
+
+    .main-section-copy h2{
+        font-size: 3rem;
+    }
+
+    #weather-card {
+        width: 50%;
+        margin: 0 auto;
+    }
+}
+
+/* Media Query for tablets and smaller screens */
+@media screen and (max-width: 768px) {
+    #weather-card,
+    #main-page-card{
+        width: 100%;
+    }
+
+    #loadingModal,
+    #messageModal,
+    #lovelistmodal,
+    #modal-content,
+    .preloader-wrapper,
+    .modal{
+        width: 80%;
+    }
+
+    .modal{
+        position: fixed;
+        left: 10%;
+    }
+
+    iframe{
+        width: 100%;
+    }
+
+    .modal{
+        margin: 0px;
+    }
+}

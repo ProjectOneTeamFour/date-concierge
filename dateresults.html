@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+
+    <title>Date Concierge</title>
+</head>
+<body>
+    <header>
+        <nav class="main-background">
+            <div class="nav-wrapper">
+                <img class="brand-logo" src="assets/images/logo-horizontal.png" alt="date concierge logo">
+                <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li class="waves-effect waves-light btn-large nav-button-background" id="change-input">Change my Details</li>
+                    <li class="waves-effect waves-light btn-large nav-button-background" id="fav-list-nav"  href="#lovelistmodal">My ♥ List</li>
+                </ul>
+            </div>
+        </nav>
+        <ul class="sidenav" id="mobile-nav">
+            <li class="waves-effect waves-light btn-large nav-button-background" id="change-input-sidenav">Change my Details</li>
+            <li class="waves-effect waves-light btn-large nav-button-background" id="fav-list-nav-sidenav"  href="#lovelistmodal">My ♥ List</li>
+        </ul>
+    </header>
+
+    <main>
+        <div class="container row">
+            <div id="history"></div>
+            <div class="col s12 m12 l8">
+                <div class="main-section-copy">
+                    <h2>Get ready. Get dressed. Here's what we've got lined up for you, <span id="user-name"></span>.</h2>
+                    <p id="intro-paragraph"></p>
+                </div>
+            </div>
+            <div class="col s12 m12 l4">
+                <div id="weather-container">
+                </div>
+            </div> 
+        </div>
+        <div class="divider"></div>
+        <div class="container row">
+            <div id="restaurant-container" class="col s12 m6">
+                <h4 id="menu-header">On the menu</h4>
+                <p id="menu-text"></p>
+                <div id="restaurant-info" class="card"></div>
+            </div>
+            <div class="col s12 m6">
+                <div class="secondary-activity-info"></div>
+                <h4 id="movie-header"></h4>
+                <p id="movie-text"></p>
+                <div id="movie-or-map-container" class="card "></div>
+            </div>
+        </div>
+        <div class="container row">
+            <div class="col s6">
+                <button id="save-btn" type="click" class="waves-effect waves-light btn-large nav-button-background">Add this to my ♥ list</button>
+            </div>
+            <div class="col s6">
+                <button id="next-btn" type="click" class="waves-effect waves-light btn-large nav-button-background">Nah, next please!</button>
+            </div>
+        </div>
+        <!-- Love List Modal -->
+        <div id="lovelistmodal" class="modal">
+            <div class="modal-content main-background">
+                <h4 class="white-font">My ♥ list</h4>
+                <p class="white-font">Here's your list of winning date ideas.</p>
+                <div class="love-list-info">
+                    <ul id="fav-list" class="collection"></ul>
+                </div>
+            </div>
+            <div class="modal-footer main-background">
+                <a href="#!" class="modal-close waves-effect waves-light btn-large nav-button-background">Back to results</a>
+            </div>
+            <div>
+                <br>
+            </div>
+        </div>
+        <!--End of Love List Modal-->
+        <!-- Loading Modal -->
+        <div id="loadingModal" class="modal">
+            <div class="modal-content">
+                <h4>We're hard at work</h4>
+                <p>...but we can only do our best when we know what city you're in. Make sure to tell your browser to allow your location to be shared with us.</p>
+                <div class="center-align">
+                    <div class="preloader-wrapper big active">
+                        <div class="spinner-layer spinner-blue-only">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End of Loading Modal-->
+        <!-- Message Modal -->
+        <div id="messageModal" class="modal">
+            <div class="modal-content">
+                <p id="message"></p>
+            </div>
+        </div>
+        <!--End of Message Modal-->
+
+    </main>
+    <footer class="page-footer main-background">
+        <div class="container">
+          <div class="row">
+            <div class="col l6 s12">
+              <h5 class="white-text">Date Concierge</h5>
+              <p class="grey-text text-lighten-4">So we've helped you plan a great night. But the perfect date <i>idea</i> doesn't guarantee a <i>perfect date</i>. We're not legally responsible for what happens next. Don't let a bad date serve as inspiration to call your ex. Please date responsibly.</p>
+            </div>
+            <div class="col l4 offset-l2 s12">
+              <h5 class="white-text">We can only help so much. But here's a bit more...</h5>
+              <ul>
+                <li>
+                    <a 
+                        class="grey-text text-lighten-3 hoverable" 
+                        href="https://bestlifeonline.com/pick-up-lines/">
+                        <u>Pick-up lines so terrible, they <i>actually</i> work ▹</u>
+                    </a>
+                </li>
+                <br>
+                <li>
+                    <a 
+                        class="grey-text text-lighten-3 hoverable" 
+                        href="https://www.self.com/story/16-ways-to-have-an-incredible-first-date">
+                        <u>16 ways to have an incredible date ▹</u>
+                    </a>
+                </li>
+                <br>
+                <li>
+                    <a 
+                        class="grey-text text-lighten-3 hoverable" 
+                        href="https://www.oprahmag.com/life/relationships-love/a28496770/first-date-conversation-starters/">
+                        <u>Need help starting the convo? Look no further ▹</u>
+                    </a>
+                </li>
+                <br>
+                <li>
+                    <a 
+                        class="grey-text text-lighten-3 hoverable" 
+                        href="https://www.25dates.com/blog/the-first-date-what-to-do-and-what-not-to-do/">
+                        <u>What to do (and what not to do) on your first date ▹</u>
+                    </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright">
+          <div class="container">
+          © 2021 Copyright
+          </div>
+        </div>
+      </footer>
+          
+    <!-- sources for jquery, jqueryui, touch punch and momentjs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <!-- custom scripts -->
+    <script src="./assets/js/dateresults.js"></script>
+</body>
+</html>

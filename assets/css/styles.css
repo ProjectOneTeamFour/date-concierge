@@ -23,6 +23,10 @@
     background-color: var(--grey);
 }
 
+nav.main-background {
+    min-height: 64px;
+}
+
 /*Font color options */
 .pink-font {
     color: var(--pink)
@@ -37,14 +41,11 @@
     background-color: var(--grey);
 }
 
-nav.main-background {
-    min-height: 64px;
-}
-
+/*Footer Options */
 .footer-links:hover {
     color: var(--grey);
 }
-
+/*Customize Framework CSS */
 .datepicker-table td.is-today,
 .datepicker-cancel,
 .datepicker-clear,
@@ -151,6 +152,7 @@ textarea.materialize-textarea:focus:not([readonly])
     border: 2px solid var(--pink);
 }
 
+/*Radio Button Options */
 #cityRB+span:before, 
 #cityRB+span:after 
 
@@ -158,12 +160,13 @@ textarea.materialize-textarea:focus:not([readonly])
     top: 10px;
 }
 
-
+/*Select Options */
 .select-wrapper input.select-dropdown:focus 
 {
     border-bottom: 1px solid var(--pink);
 }
 
+/*Modals */
 #loadingModal {
     height: 300px;
     width: 500px;
@@ -189,6 +192,7 @@ main#landing-page {
     min-height: 100vh;
 }
 
+/*Cards */
 #main-page-card {
     width: 410px;
 }
@@ -228,27 +232,26 @@ main#landing-page {
     overflow-y: scroll;
 }
 
-.m-2px-lr {
-    margin: 0 2px;
-}
-
-.modal-btn {
-    margin: 20px auto;
-}
-
-.sidenav {
-    opacity: 90%;
-}
-
-.modal-btn{
-    flex-wrap: wrap;
-}
 .card-panel{
     padding: 5px;
 }
 
 iframe{
     width: 100%;
+}
+
+.modal-btn {
+    margin: 20px auto;
+    flex-wrap: wrap;
+}
+
+.sidenav {
+    opacity: 90%;
+}
+
+/* Utility classes */
+.m-2px-lr {
+    margin: 0 2px;
 }
 
 .color-error {
@@ -259,7 +262,7 @@ iframe{
     background-color: #d4edda;
 }
 
-/* Media Query for Tablets and smaller screens */
+/* Media Query for smaller desktop screens */
 @media screen and (max-width: 980px) {
     .sidenav li {
         width: 100%;
@@ -276,6 +279,7 @@ iframe{
     }
 }
 
+/* Media Query for tablets and smaller screens */
 @media screen and (max-width: 768px) {
     #weather-card,
     #main-page-card{

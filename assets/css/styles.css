@@ -45,13 +45,6 @@ nav.main-background {
     color: var(--grey);
 }
 
-/* change the color and background color of datepicker */
-.datepicker-table td.is-selected,
-.datepicker-date-display 
-{
-    background-color: var(--pink);
-}
-
 .datepicker-table td.is-today,
 .datepicker-cancel,
 .datepicker-clear,
@@ -59,6 +52,14 @@ nav.main-background {
 .datepicker-done
 {
     color:var(--pink);
+}
+
+/* change the color and background color of datepicker */
+.datepicker-table td.is-selected,
+.datepicker-date-display 
+{
+    background-color: var(--pink);
+    color: var(--white);
 }
 
 /* change the color of select drop list */
@@ -276,6 +277,8 @@ iframe{
     #main-page-card{
         width: 100%;
     }
+    #loadingModal,
+    #messageModal,
     #lovelistmodal,
     #modal-content,
     .preloader-wrapper,

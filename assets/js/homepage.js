@@ -28,6 +28,7 @@ var performValidation = function()
     }
 
     // check if date input is invalid
+
     if (!Date.parse(date)){
         errMsg += "<li>Date is not valid</li>";
         elementList.push(dateEl);
@@ -169,13 +170,13 @@ var changePage = function()
     document.location.replace("./dateresults.html"+"?username="+userName+"&date="+date+"&mood="+mood+"&lat="+lat+"&lon="+lon);
 };
 
-// Initialize datepicker
-$("#date").datepicker(
-{
-    format: "mm-dd-yyyy",
-    minDate : today,
-    maxDate : nextWeek
-});
+// // Initialize datepicker
+// $("#date").datepicker(
+// {
+//     format: "mm-dd-yyyy",
+//     minDate : today,
+//     maxDate : nextWeek
+// });
 
 // handles radio button functionality
 $('#cityRB').click(function() 
@@ -198,6 +199,14 @@ $('#cityRB').click(function()
 $(document).ready(function()
 {
     $('.modal').modal(); // initialize modal
+    
+    // Initialize datepicker
+    $("#date").datepicker(
+    {
+        format: "mm-dd-yyyy",
+        minDate : today,
+        maxDate : nextWeek
+    });
     // Get an instance of message modal
     messageModalInstance = M.Modal.getInstance($('#homepageMessageModal'));
     messageModalInstance.options.dismissible = false;

@@ -65,7 +65,14 @@ SO THAT I can find an appropriate date for me
 * Samiul Choudhury
 
 ### Screenshot
-[TO BE ADDED]
+#### On Large Screen
+![Desktop View](./assets/images/app-screen-shot.png)
+
+#### On Small Screen
+<img src="./assets/images/app-screen-shot-mobile.png" width="270"></img>
+
+### Project Pitch Presentation
+[Click here to see our project pitch presentation](./assets/pdf/presentation.pdf)
 
 ### Application URL
 [Click here to see the final outcome](https://projectoneteamfour.github.io/date-concierge/)
